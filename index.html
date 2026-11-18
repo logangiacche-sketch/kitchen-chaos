@@ -48,8 +48,8 @@ h3{margin:10px 0 4px;font-size:15px}
 .ic:hover{transform:translateY(-3px) scale(1.04)}.ic.sl{background:#3a3050;box-shadow:0 0 0 3px var(--gold)}.ic i{font-size:36px;height:64px;line-height:64px;font-style:normal}
 .tag{font:800 10px Nunito,sans-serif;padding:2px 7px;border-radius:99px;background:#3a4680}
 #stage{border:3px solid #f7b73355;border-radius:20px}
-#ui.still *{animation:none!important}@keyframes pop{from{transform:scale(.93);opacity:0}to{transform:none;opacity:1}}@keyframes slide{from{transform:translateX(24px);opacity:0}to{transform:none;opacity:1}}@keyframes bn{0%,100%{transform:translateY(0) rotate(-6deg)}50%{transform:translateY(-26px) rotate(8deg)}}
-.ov.dim>*{animation:pop .3s ease-out}.mmain{animation:slide .35s ease-out}.tb{transition:transform .1s}.tb:hover{transform:translateX(5px)}
+#ui.still *{animation:none!important}@keyframes pop{from{transform:scale(.98);opacity:0}to{transform:none;opacity:1}}@keyframes slide{from{transform:translateX(10px);opacity:0}to{transform:none;opacity:1}}@keyframes bn{0%,100%{transform:translateY(0) rotate(-6deg)}50%{transform:translateY(-26px) rotate(8deg)}}
+.ov.dim>*{animation:pop .15s ease-out}.mmain{animation:slide .18s ease-out}.tb{transition:transform .1s}.tb:hover{transform:translateX(5px)}
 #load{position:fixed;inset:0;z-index:50;display:flex;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(#0000,#050719cc),url(assets/pattern.png) #181f44;transition:opacity .4s}#load.out{opacity:0;pointer-events:none}
 #load .bn{display:flex;gap:18px;margin:18px 0}#load .bn i{font-style:normal;font-size:54px;animation:bn .9s ease-in-out infinite}#load .bn i:nth-child(2){animation-delay:.15s}#load .bn i:nth-child(3){animation-delay:.3s}#load .bn i:nth-child(4){animation-delay:.45s}
 .lbar{width:min(360px,70vw);height:16px;border-radius:99px;background:#0008;border:3px solid var(--gold);overflow:hidden}.lbar b{display:block;height:100%;width:0;background:linear-gradient(90deg,#ff6a3d,#f7b733)}#ltip{margin-top:14px;font-weight:800;opacity:.85;text-align:center;padding:0 20px}
@@ -117,7 +117,7 @@ function music(){if(!AC||!cfg.mus||AC.state!=='running')return;if(MUS){if(!MS){M
 
 /* ================= DRAW HELPERS & TEXTURES ================= */
 const SC={},TEX={},TT={};
-const TEXN=['acc_glasses','acc_goggles','acc_monocle','acc_shades','acc_stache','ap_checker','ap_checker_fix','ap_denim','ap_denim_fix','ap_flame','ap_flame_fix','ap_heart','ap_heart_fix','ap_plain','ap_plain_fix','ap_pocket','ap_pocket_fix','ap_striped','ap_striped_fix','ap_tux','ap_tux_fix','body_arm','body_head','body_leg','body_neck','body_shadow','body_torso','cheek','cl_camo','cl_checker','cl_diamond','cl_dots','cl_split','cl_stars','cl_stripes','cl_vstripes','eye_iris','eye_pupil','eye_white','hat_band','hat_bandana','hat_bandana_fix','hat_beanie','hat_beanie_fix','hat_bunny','hat_bunny_fix','hat_cap','hat_cap_fix','hat_chef','hat_chef_band','hat_cowboy','hat_cowboy_fix','hat_crown','hat_crown_fix','hat_halo_fix','hat_party','hat_party_fix','hat_tophat','hat_tophat_fix','hat_wizard','hat_wizard_fix','ing_beef_0','ing_beef_1','ing_beef_2','ing_beef_3','ing_bun','ing_buntop','ing_cheese','ing_cheese_pizza','ing_dough','ing_lettuce','ing_mushroom','ing_patty_0','ing_patty_1','ing_patty_2','ing_patty_3','ing_pepperoni_0','ing_pepperoni_1','ing_pepperoni_2','ing_pepperoni_3','ing_sauce','ing_shell','ing_tomato','mouth_open','plate_clean','plate_dirty','shoe_boot','shoe_clog','shoe_flip','shoe_flip_fix','shoe_hitop','shoe_hitop_fix','shoe_skates','shoe_skates_fix','shoe_sneaker','shoe_sneaker_fix','shoe_sparkle','shoe_sparkle_fix'];
+const TEXN=[];
 let TQ=0;['wood','steel','floor_burger','floor_taco','floor_pizza','cloth','flame',...TEXN].forEach(n=>{const i=new Image();i.onload=()=>{TEX[n]=i;clearTimeout(TQ);TQ=setTimeout(()=>{for(const k in SC)delete SC[k];for(const k in CC)delete CC[k];for(const k in TT)delete TT[k];FK='';try{drawAv()}catch(e){}},60)};i.src='assets/'+n+'.png'});
 /* draw a texture (optionally tinted with a color) anchored at (x,y); ax/ay = anchor fraction */
 function timg(n,col,x,y,w,h,ax=.5,ay=.5){const im=TEX[n];if(!im)return false;let k=n+'|'+col,c=TT[k];if(!c){c=document.createElement('canvas');c.width=im.width;c.height=im.height;const q=c.getContext('2d');q.drawImage(im,0,0);if(col){q.globalCompositeOperation='multiply';q.fillStyle=col;q.fillRect(0,0,c.width,c.height);q.globalCompositeOperation='destination-in';q.drawImage(im,0,0)}TT[k]=c}g.drawImage(c,x-w*ax,y-h*ay,w,h);return true}
@@ -181,12 +181,12 @@ function shoe(x,y,L){const c=L.shc||'#fff',k=L.sh;
 const CC={};let ccn=0;
 function chara(sx,sy,L,fx,fy,bob,sw,up,wash,talk,held){const z=L.sz||1;g.save();g.translate(sx,sy);g.scale(z,z);
  if(phase==='play'){const qb=Math.round(bob),qs=Math.round(sw/2.5)*2.5,qw=wash?(performance.now()/70|0)%4:-1,key=JSON.stringify(L)+'|'+fx+fy+'|'+qb+'|'+qs+'|'+!!up+qw+!!talk;let c=CC[key];
-  if(!c){if(ccn>260){for(const k in CC)delete CC[k];ccn=0}c=CC[key]=document.createElement('canvas');ccn++;c.width=c.height=240;const o=g;g=c.getContext('2d');g.scale(2,2);g.translate(60,100);if(fy===0&&fx&&qs)g.rotate(fx*.07);ch0(0,0,L,fx,fy,qb,qs,up,wash?1:0,talk,null);if(TEX.cloth){const q=g.createPattern(TEX.cloth,'repeat');q.setTransform(new DOMMatrix().scale(.5));g.globalCompositeOperation='source-atop';g.fillStyle=q;g.fillRect(-60,-100,120,120)}g=o}
+  if(!c){if(ccn>260){for(const k in CC)delete CC[k];ccn=0}c=CC[key]=document.createElement('canvas');ccn++;c.width=c.height=240;const o=g;g=c.getContext('2d');g.scale(2,2);g.translate(60,100);if(fy===0&&fx&&qs)g.rotate(fx*.03);ch0(0,0,L,fx,fy,qb,qs,up,wash?1:0,talk,null);if(TEX.cloth){const q=g.createPattern(TEX.cloth,'repeat');q.setTransform(new DOMMatrix().scale(.5));g.globalCompositeOperation='source-atop';g.fillStyle=q;g.fillRect(-60,-100,120,120)}g=o}
   if(held&&fy<0)held();g.drawImage(c,-60,-100,120,120);if(held&&fy>=0)held()}
- else{if(fy===0&&fx&&sw)g.rotate(fx*.07);ch0(0,0,L,fx,fy,bob,sw,up,wash,talk,held)}
+ else{if(fy===0&&fx&&sw)g.rotate(fx*.03);ch0(0,0,L,fx,fy,bob,sw,up,wash,talk,held)}
  g.restore()}
-function ch0(sx,sy,L,fx,fy,bob,sw,up,wash,talk,held){const cy=sy-22-bob,hz=fx!==0&&fy===0,lx=hz?sw*.5:0,ly=hz?0:sw*.6,ax=up?0:hz?sw*.6:0,ay=up?0:hz?0:sw*.6;
- if(!timg('body_shadow','',sx,sy+2,40,16))ell(sx,sy+2,17,7,'rgba(0,0,0,.3)');if(TEX.body_leg){timg('body_leg','',sx-9+lx,sy-8+ly,12,16,2/12,3/16);timg('body_leg','',sx+2-lx,sy-8-ly,12,16,2/12,3/16)}else{g.fillStyle='#2a2f3b';g.fillRect(sx-9+lx,sy-8+ly,7,10);g.fillRect(sx+2-lx,sy-8-ly,7,10)}shoe(sx-5.5+lx,sy+2+ly,L);shoe(sx+5.5-lx,sy+2-ly,L);
+function ch0(sx,sy,L,fx,fy,bob,sw,up,wash,talk,held){const cy=sy-22-bob,hz=fx!==0&&fy===0,lx=hz?sw*.28:0,ly=hz?0:sw*.35,ax=up?0:hz?sw*.35:0,ay=up?0:hz?0:sw*.35;
+ if(!timg('body_shadow','',sx,sy+2,40,16))ell(sx,sy+2,17,7,'rgba(0,0,0,.3)');if(TEX.body_leg){timg('body_leg','',sx-9+lx,sy-8+ly,12,16,2/12,3/16);timg('body_leg','',sx+2-lx,sy-8-ly,12,16,2/12,3/16)}else{g.fillStyle='#2a2f3b';g.fillRect(sx-9+lx,sy-14,7,16+ly);g.fillRect(sx+2-lx,sy-14,7,16-ly)}shoe(sx-5.5+lx,sy+2+ly,L);shoe(sx+5.5-lx,sy+2-ly,L);
  const back=fy<0;if(held&&back)held();
  if(!timg('body_torso',L.c,sx,cy,36,40)){ell(sx,cy,15,17,[L.c,'#0006']);ell(sx,cy,15,17,L.c)}
  if(L.cl&&L.cl!=='plain'&&TEX['cl_'+L.cl])timg('cl_'+L.cl,L.cc||'#fff',sx,cy,36,40);else if(L.cl&&L.cl!=='plain'){g.save();g.beginPath();g.ellipse(sx,cy,15,17,0,0,7);g.clip();g.fillStyle=L.cc||'#fff';
@@ -259,11 +259,12 @@ function mkK(team,seed,looks){const K={team,t:0,score:0,orders:[],nx:2,oid:0,ret
 const rush=K=>Math.min(5,1+Math.floor(K.t/(DUR/5)));
 const solid=(x,y)=>{const c=Math.floor(x),r=Math.floor(y);return c<0||r<0||c>=W||r>=H||MAP[r][c]!=='.'};
 function tryMove(K,p,dx,dy){const nx=p.x+dx,ny=p.y+dy,r=.3;for(const[ox,oy]of[[-r,-r],[r,-r],[-r,r],[r,r]])if(solid(nx+ox,ny+oy))return;p.x=nx;p.y=ny}
-function tgt(K,p){const c=Math.floor(p.x+p.fx*.8),r=Math.floor(p.y+p.fy*.8);if(c<0||r<0||c>=W||r>=H)return null;const t=K.tiles[r][c];return t.ch==='.'?null:t}
+function tgt(K,p){let b=null,bd=1.3;const c0=Math.floor(p.x),r0=Math.floor(p.y);for(let r=r0-1;r<=r0+1;r++)for(let c=c0-1;c<=c0+1;c++){if(c<0||r<0||c>=W||r>=H)continue;const t=K.tiles[r][c];if(t.ch==='.')continue;let d=Math.hypot(p.x-c-.5,p.y-r-.5);if((c+.5-p.x)*p.fx+(r+.5-p.y)*p.fy>0)d-=.15;if(d<bd){bd=d;b=t}}return b}
+function turnTo(p,t){const dx=t.c+.5-p.x,dy=t.r+.5-p.y;if(Math.abs(dx)>Math.abs(dy)){p.fx=dx>0?1:-1;p.fy=0}else{p.fx=0;p.fy=dy>0?1:-1}}
 const emit=(K,ty,x,y,pi,a)=>{if(NET)K.ev.push([ty,x,y,pi,a]);if(K===V)fx(K,ty,x,y,pi,a)};
 function say(K,p,arr){if(Math.random()<.12)emit(K,'say',0,0,K.pl.indexOf(p),arr[Math.random()*arr.length|0])}
 function canAdd(pl,q){return isP(pl)&&isI(q)&&!pl.c.some(x=>x.i===q.i)&&(q.cook===undefined||(q.cook>=4&&q.cook<11))}
-function act(K,p){const t=tgt(K,p);if(!t||K.over)return;const ch=t.ch,it=p.item,pi=K.pl.indexOf(p),cx=t.c*T+T/2,cy=OY+t.r*T,ci=ch>='1'&&ch<='5'?+ch-1:-1;
+function act(K,p){const t=tgt(K,p);if(!t||K.over)return;turnTo(p,t);const ch=t.ch,it=p.item,pi=K.pl.indexOf(p),cx=t.c*T+T/2,cy=OY+t.r*T,ci=ch>='1'&&ch<='5'?+ch-1:-1;
  if(ci>=0){if(!it){p.item=ci===cookI()?{i:ci,cook:0,by:pi}:{i:ci,by:pi};emit(K,'pick',cx,cy,pi)}else if(ci!==cookI()&&canAdd(it,{i:ci})){it.c.push({i:ci,by:pi});emit(K,'pick',cx,cy,pi)}return}
  if(ch==='P'){if(!it&&t.n>0){t.n--;p.item={c:[]};emit(K,'plate',cx,cy,pi)}else if(isP(it)&&!it.c.length){t.n++;p.item=null;emit(K,'plate',cx,cy,pi)}return}
  if(ch==='D'){if(!it&&t.n>0){t.n--;p.item={dy:1};emit(K,'plate',cx,cy,pi)}else if(isD(it)){t.n++;p.item=null;emit(K,'plate',cx,cy,pi)}return}
@@ -280,7 +281,7 @@ function serve(K,p,pl,cx,cy,pi){const ids=pl.c.map(q=>q.i).sort().join(),o=K.ord
 function upd(K,dt){if(K.over)return;K.t+=dt;K.flash=0;K.shake=Math.max(0,K.shake-dt*20);const Rr=rush(K);
  K.pl.forEach((p,pi)=>{const{dx,dy,a}=p.inp;if(dx||dy){const l=Math.hypot(dx,dy),sp=4.4*dt/l;tryMove(K,p,dx*sp,0);tryMove(K,p,0,dy*sp);p.mv=1;p.ph+=dt*13/(p.L.sz||1);
    if(dx&&!dy){p.fx=dx;p.fy=0}else if(dy&&!dx){p.fx=0;p.fy=dy}else if(p.fx!==dx&&p.fy!==dy){p.fx=dx;p.fy=0}}else p.mv=0;
-  if(p.say&&(p.say.t-=dt)<=0)p.say=null;p.wash=0;const t=tgt(K,p);
+  if(p.say&&(p.say.t-=dt)<=0)p.say=null;p.wash=0;const t=tgt(K,p);if(t&&t.ch==='W'&&a&&!p.item&&t.dirty>0)turnTo(p,t);
   if(t&&t.ch==='W'&&!p.item&&a&&t.dirty>0){p.wash=1;t.prog+=dt/2.5;if(Math.random()<.08)emit(K,'wash',t.c*T+T/2,OY+t.r*T,pi);if(t.prog>=1){t.prog=0;t.dirty--;t.clean++;emit(K,'done',t.c*T+T/2,OY+t.r*T,pi);say(K,p,['Sparkly!','Squeaky clean!'])}}else if(t&&t.ch==='W')t.prog=0});
  let dT=[];K.tiles.forEach(row=>row.forEach(t=>{if(t.ch==='D')dT.push(t);
   if(t.ch==='S'&&t.item){const q=t.item,b=q.cook,cx=t.c*T+T/2,cy=OY+t.r*T;q.cook+=dt*G.cm;
@@ -302,7 +303,7 @@ function fx(K,ty,x,y,pi,a){if(SFX[ty]&&ty!=='say'){snd(ty);if(ty==='ding'||ty===
  case 'expire':tone(200,.4,'sawtooth',.15,100);PT.push({x:CW-90,y:OY+30,vx:0,vy:-20,l:1.5,t:a+' left 😤',c:'#ff7a6a',r:0});break;
  case 'say':if(K.pl[pi])K.pl[pi].say={t:1.7,txt:a};break}MUTE=0}
 function finish(){if(phase!=='play')return;KS.forEach(k=>k.over=1);const r={sc:KS.map(k=>[k.team,k.score]),k:KS.map(k=>({st:k.st,pl:k.pl.map(p=>({n:p.L.n,c:p.L.c,d:p.d,pts:p.pts,cr:p.cr||0,sh:p.sh||0,L:p.L}))})),my:KS.indexOf(V),len:G.len,mode:G.mode};
- if(NET&&NET.host)NET.conns.forEach(c=>{try{c.send({t:'end',r:{...r,my:MAPS_[c.sidx].k}})}catch(e){}});showRes(r)}
+ if(NET&&NET.host){NET.conns.forEach(c=>{try{c.send({t:'end',r:{...r,my:MAPS_[c.sidx].k}})}catch(e){}});(NET.specs||[]).forEach(c=>{try{c.send({t:'end',r:{...r,my:0}})}catch(e){}})}showRes(r)}
 
 /* ================= RENDER ================= */
 let MQ={t:0,txt:''},mqT=60,jmp=0;
@@ -315,7 +316,7 @@ function drawMenu(ts){const t=ts/1000;g.fillStyle='#161d3a';g.fillRect(0,0,VW,VH
  mqT-=1/60;if(mqT<=0){mqT=45;MQ={t:2.8,txt:Math.random()<.25?'Hi '+cfg.me.n+'!':QS[Math.random()*QS.length|0]}}MQ.t-=1/60;jmp=Math.max(0,jmp-.05);
  if(phase==='menu'&&(TAB==='cust'||TAB==='shop')){const el=document.getElementById('stage');if(el){const r=el.getBoundingClientRect(),L=stL(),z=Math.min(r.height/110,r.width/64),cx=r.left+r.width/2,fy=r.top+r.height*.84,ph=t*13/(L.sz||1),F=[[0,1],[1,0],[0,-1],[-1,0]][SFi];
   const sp=g.createRadialGradient(cx,fy-20*z,5,cx,fy-20*z,75*z);sp.addColorStop(0,'rgba(255,220,140,.35)');sp.addColorStop(1,'rgba(255,220,140,0)');g.fillStyle=sp;g.fillRect(cx-90*z,fy-100*z,180*z,130*z);ell(cx,fy+3*z,34*z,9*z,'rgba(255,255,255,.14)','#f7b73388');
-  g.save();g.translate(cx,fy);g.scale(z,z);chara(0,0,L,F[0],F[1],SW?Math.abs(Math.sin(ph))*(F[1]?1.5:3.5):Math.sin(t*3)*1.5,SW?Math.sin(ph)*5:0,0,0,0);g.restore()}}
+  g.save();g.translate(cx,fy);g.scale(z,z);chara(0,0,L,F[0],F[1],SW?Math.abs(Math.sin(ph))*(F[1]?.7:1.2):Math.sin(t*3)*1.5,SW?Math.sin(ph)*3:0,0,0,0);g.restore()}}
  if(phase==='menu'&&TAB==='play'){const nw=Math.min(230,Math.max(150,VW*.16)),mw=VW-nw,z=Math.min(VH/120,mw/2/48),cx=nw+mw*.75,fy=VH*.8-Math.abs(Math.sin(jmp*3))*30*Math.min(1,jmp);
   g.save();g.translate(cx,fy);g.scale(z,z);chara(0,0,cfg.me,0,1,Math.sin(t*3)*1.5,0,0,0,MQ.t>0);g.restore();if(MQ.t>0)bubble(cx,fy-78*z*(cfg.me.sz||1),MQ.txt)}}
 function hud(K){g.fillStyle='#1a2048';g.fillRect(0,0,CW,OY);wood(0,0,CW,OY-8,'#6b4423','#4a2e14',3);g.fillStyle='#f7b733';g.fillRect(0,OY-8,CW,4);g.fillStyle='#0004';g.fillRect(0,OY-4,CW,4);
@@ -332,10 +333,10 @@ function drawGame(){const K=V;g.save();if(cfg.shake&&K.shake>0)g.translate((Math
  g.drawImage(bg(),0,0,CW,CH);
  for(let r=0;r<H;r++){for(let c=0;c<W;c++)if(MAP[r][c]!=='.')dyn(K,r,c);
   K.pl.map((p,i)=>[p,i]).filter(([p])=>Math.floor(p.y)===r).sort((a,b)=>a[0].y-b[0].y).forEach(([p,i])=>{
-   const bob=p.mv?Math.abs(Math.sin(p.ph))*(p.fy?1.5:3.5):Math.sin(K.t*3+i)*1.2,sx=p.x*T,sy=OY+p.y*T;
-   chara(sx,sy,p.L,p.fx,p.fy,bob,p.mv?Math.sin(p.ph)*5:0,!!p.item,p.wash,!!p.say,p.item&&(()=>put(p.item,p.fx*10,-(p.fy<0?32:26)-bob+p.fy*6)));
+   const bob=p.mv?Math.abs(Math.sin(p.ph))*(p.fy?.7:1.2):Math.sin(K.t*3+i)*1.2,sx=p.x*T,sy=OY+p.y*T;
+   chara(sx,sy,p.L,p.fx,p.fy,bob,p.mv?Math.sin(p.ph)*3:0,!!p.item,p.wash,!!p.say,p.item&&(()=>put(p.item,p.fx*10,-(p.fy<0?32:26)-bob+p.fy*6)));
    cfg.tags&&txt(p.L.n||'P'+(i+1),sx,sy-(70+bob)*(p.L.sz||1),12,'#fff','center','Nunito');if(p.say&&cfg.bub)bubble(sx,sy-(84+bob)*(p.L.sz||1),p.say.txt)})}
- cfg.hl&&K.pl.forEach(p=>{if(p.L!==K.pl[ME.pi].L&&NET)return;const t=tgt(K,p);if(!t)return;g.strokeStyle=p.L.c;g.lineWidth=3;g.beginPath();g.roundRect(t.c*T+2,OY+t.r*T-LIFT+2,T-4,T-4,8);g.stroke()});
+ cfg.hl&&K.pl.forEach(p=>{if(p.L!==(K.pl[ME.pi]||{}).L&&NET)return;const t=tgt(K,p);if(!t)return;g.strokeStyle=p.L.c;g.lineWidth=3;g.beginPath();g.roundRect(t.c*T+2,OY+t.r*T-LIFT+2,T-4,T-4,8);g.stroke();txt('▼',t.c*T+T/2,OY+t.r*T-LIFT-4-Math.abs(Math.sin(K.t*5))*5,18,p.L.c,'center','Nunito')});
  PT.forEach(q=>{g.globalAlpha=Math.min(1,q.l*1.5);if(q.t){g.font='800 20px Nunito';g.fillStyle=q.c;g.textAlign='center';g.fillText(q.t,q.x,q.y)}else ell(q.x,q.y,q.r,q.r,q.c);g.globalAlpha=1});
  {const v_=g.createRadialGradient(CW/2,CH/2+OY/2,CH*.35,CW/2,CH/2,CW*.65);v_.addColorStop(0,'rgba(0,0,0,0)');v_.addColorStop(1,'rgba(10,6,30,.38)');g.fillStyle=v_;g.fillRect(0,OY,CW,CH-OY)}g.restore();hud(K);if(paused){g.fillStyle='#000a';g.fillRect(0,OY,CW,CH)}}
 function fxTick(dt){if(V&&phase==='play'&&!paused)V.pl.forEach(p=>{const t=p.L.tr;if(!cfg.parts||!p.mv||!t||t==='none'||Math.random()>.4)return;const x=p.x*T+(Math.random()-.5)*14,y=OY+p.y*T-4;
@@ -351,7 +352,7 @@ function frame(ts){if(phase==='play'&&pph!=='play'){showLoad(1100);paused=true;s
  if(phase==='play'&&V){fxTick(dt);if(!paused){
    if(!NET||NET.host){const rk=readKeys();if(MODE==='local')V.pl.forEach((p,i)=>p.inp=rk(i));else if(NET)KS[ME.k].pl[ME.pi].inp=rk(0);
     KS.forEach(k=>upd(k,dt));SCR=KS.map(k=>[k.team,k.score]);if(KS[0].t>=DUR)finish();
-    if(NET&&NET.host){NET.acc=(NET.acc||0)+dt;if(NET.acc>=.033){NET.acc=0;NET.conns.forEach(c=>{try{const k=KS[MAPS_[c.sidx].k],f=NET.fast&&NET.fast[c.peer];(f&&f.open?f:c).send({t:'snap',d:snap(k)})}catch(e){}});KS.forEach(k=>k.ev=[])}}}
+    if(NET&&NET.host){NET.acc=(NET.acc||0)+dt;if(NET.acc>=.033){NET.acc=0;NET.conns.forEach(c=>{try{const k=KS[MAPS_[c.sidx].k],f=NET.fast&&NET.fast[c.peer];(f&&f.open?f:c).send({t:'snap',d:snap(k)})}catch(e){}});(NET.specs||[]).forEach(c=>{try{c.send({t:'snap',d:snap(KS[0])})}catch(e){}});KS.forEach(k=>k.ev=[])}}}
    else{V.t+=dt;sendIn();const me=V.pl[ME.pi],al=1-Math.exp(-dt*22);if(me){const{dx,dy}=readKeys()(0);if(dx||dy){const l=Math.hypot(dx,dy),sp=4.4*dt/l;tryMove(V,me,dx*sp,0);tryMove(V,me,0,dy*sp);me.mv=1;me.ph+=dt*13/(me.L.sz||1);if(dx&&!dy){me.fx=dx;me.fy=0}else if(dy&&!dx){me.fx=0;me.fy=dy}else if(me.fx!==dx&&me.fy!==dy){me.fx=dx;me.fy=0}}else me.mv=0}
    V.pl.forEach(p=>{if(p.tx!==undefined&&p!==me){p.x+=(p.tx-p.x)*al;p.y+=(p.ty-p.y)*al}if(p.say&&(p.say.t-=dt)<=0)p.say=null;});V.shake=Math.max(0,V.shake-dt*20)}}
   vg()}else{fxTick(dt);if(phase==='res'&&V)vg();else drawMenu(ts)}
@@ -497,11 +498,38 @@ function acctView(){const a=cfg.acct,h='<h2>Account</h2>',msg=`<p class="msg">${
  if(AV==='reset')return `${h}<p style="font-size:14px;margin:0 0 6px">Type the code from the email and pick a new password.</p>${fld('Email','ae','email',AE)}${fld('Code','ac','text','',10)}${fld('New password','ap','password')}${fld('Repeat it','ap2','password')}<div class="row"><button class="b md" ${ABUSY?'disabled':''} onclick="acctReset()">Reset password</button>${back}</div>${msg}`;
  return `${h}${sw}<p style="font-size:14px;margin:0 0 6px">${AV==='up'?'Pick a username and password to create your account.':'Log in with your email and password.'}</p>${fld('Email','ae','email',AE)}${AV==='up'?fld('Username','au','text',AU,12):''}${fld('Password','ap','password')}<div class="row">${AV==='up'?`<button class="b md" ${ABUSY?'disabled':''} onclick="acctGo('up')">Create account</button>`:`<button class="b md" ${ABUSY?'disabled':''} onclick="acctGo('in')">Log in</button>`}</div>${AV==='in'?`<div class="row">${chipB('Forgot password?',goA('forgot'))}</div>`:''}${msg}`}
 const tg=(k,l)=>`<div class="row"><span>${l}</span><button class="chip ${cfg[k]?'on':''}" onclick="cfg.${k}=${cfg[k]?0:1};save();menuR()">${cfg[k]?'On':'Off'}</button></div>`;
-const tgf=(k,l)=>{cfg.fs=cfg.fs||{req:1,spec:1};return `<div class="row"><span style="width:170px">${l}</span><button class="chip ${cfg.fs[k]?'on':''}" onclick="cfg.fs.${k}=${cfg.fs[k]?0:1};save();menuR()">${cfg.fs[k]?'On':'Off'}</button></div>`};
-function addFr(){cfg.friends=cfg.friends||[];const n=cleanName(gv('fin'));AMSG=!n?'Enter a valid username.':cfg.friends.includes(n)?'Already your friend.':(cfg.friends.push(n),save(),'Added '+n+'!');menuR()}
+const tgf=(k,l)=>{cfg.fs=cfg.fs||{req:1,spec:1};return `<div class="row"><span style="width:170px">${l}</span><button class="chip ${cfg.fs[k]?'on':''}" onclick="cfg.fs.${k}=${cfg.fs[k]?0:1};save();hb();menuR()">${cfg.fs[k]?'On':'Off'}</button></div>`};
+const kc=(...a)=>a.map(k=>`<kbd style="display:inline-block;min-width:26px;text-align:center;padding:3px 7px;margin:0 2px;border-radius:7px;background:#161d3a;border:2px solid var(--gold);font:800 14px Nunito">${k}</kbd>`).join('');
+
+/* ---- friends (needs friends_setup.sql run once in Supabase) ---- */
+let FR={l:[],in:[],out:[],ok:0,msg:''},FQ='';
+const fok=()=>!!(SB_URL&&cfg.acct);
+async function loadFr(){if(!fok())return;try{const me=cfg.acct.id,rows=await sb('/rest/v1/friendships?select=id,a,b,status&order=created_at.desc'),ids=[...new Set(rows.map(r=>r.a===me?r.b:r.a))],nm={},pr={};
+ if(ids.length){(await sb('/rest/v1/rpc/friend_names',{m:'POST',b:{ids}})).forEach(x=>nm[x.user_id]=x.username);(await sb('/rest/v1/presence?select=user_id,status,room,allow_spec,updated_at&user_id=in.('+ids.join(',')+')')).forEach(x=>pr[x.user_id]=x)}
+ const mk=r=>{const o=r.a===me?r.b:r.a,q=pr[o]||{},on=q.updated_at&&Date.now()-new Date(q.updated_at)<75000;return{id:r.id,n:nm[o]||'Chef',st:on?q.status:'offline',room:on?q.room:null,sp:q.allow_spec!==false}},ord={playing:0,online:1,offline:2};
+ FR={l:rows.filter(r=>r.status==='accepted').map(mk).sort((a,b)=>ord[a.st]-ord[b.st]),in:rows.filter(r=>r.status==='pending'&&r.b===me).map(mk),out:rows.filter(r=>r.status==='pending'&&r.a===me).map(mk),ok:1,msg:FR.msg}}catch(e){FR.ok=1;FR.msg=/friendships|friend_names|schema/i.test(e.message)?'Friends are not set up on the server yet. Run friends_setup.sql in Supabase.':niceErr(e.message)}
+ if(TAB==='friends'&&phase==='menu'&&!GMV)menuR()}
+const frDo=async f=>{try{FR.msg=(await f())||''}catch(e){FR.msg=niceErr(e.message)}loadFr()};
+const frAdd=()=>{const n=gv('fin');FQ='';if(!n){FR.msg='Type a username.';menuR();return}frDo(()=>sb('/rest/v1/rpc/friend_request',{m:'POST',b:{n}}))};
+const frAcc=id=>frDo(()=>sb('/rest/v1/friendships?id=eq.'+id,{m:'PATCH',b:{status:'accepted'}}).then(()=>'Friend added!')),frDel=id=>frDo(()=>sb('/rest/v1/friendships?id=eq.'+id,{m:'DELETE'}).then(()=>''));
+function hb(){if(!fok())return;const f=cfg.fs||{req:1,spec:1};sb('/rest/v1/presence?on_conflict=user_id',{m:'POST',h:{Prefer:'resolution=merge-duplicates,return=minimal'},b:{user_id:cfg.acct.id,status:phase==='play'?'playing':'online',room:NET?NET.code:null,allow_spec:!!f.spec,allow_req:!!f.req,updated_at:new Date().toISOString()}}).catch(()=>{})}
+setInterval(hb,30000);setTimeout(hb,3000);setInterval(()=>{if(TAB==='friends'&&phase==='menu'&&!GMV)loadFr()},12000);
+function spectate(code){if(typeof Peer==='undefined'){FR.msg='Online needs the PeerJS script.';menuR();return}au();leaveNet();MODE='online';const peer=new Peer();NET={host:false,peer,code,c:null,me:0,spec:1};
+ const bail=m=>{leaveNet();goMenu('friends');FR.msg=m;menuR()},tmo=setTimeout(()=>bail('Could not reach that game.'),10000);
+ peer.on('error',()=>{clearTimeout(tmo);bail('Could not reach that game.')});peer.on('open',()=>{const c=peer.connect('kchaos-'+code,{reliable:true});NET.c=c;c.on('open',()=>{clearTimeout(tmo);c.send({t:'spec'})});c.on('data',m=>guestMsg(m));c.on('close',()=>{if(NET&&phase==='play')bail('The game ended.')})})}
+function friendsView(){const h='<h2 style="font-size:40px">Friends</h2>';
+ if(!SB_URL)return h+'<p>Friends need the Supabase setup.</p>';
+ if(!cfg.acct)return h+'<p style="font-size:17px;line-height:1.5">Log in to add friends, see who is playing and spectate their games.</p><button class="b md" onclick="TAB=\'acct\';menuR()">Go to Account</button>';
+ if(!FR.ok){FR.ok=1;loadFr()}
+ const ST={playing:'🟢 Playing',online:'🟢 Online',offline:'⚪ Offline'},av=n=>`<div style="width:54px;height:54px;border-radius:50%;flex:none;background:${COLS[hs(n)%COLS.length]};display:flex;align-items:center;justify-content:center;font:400 28px 'Lilita One';border:3px solid #fff4">${esc((n[0]||'?').toUpperCase())}</div>`,
+ row=(f,sub,b)=>`<div class="pl" style="padding:10px 16px;gap:14px">${av(f.n)}<div style="flex:1"><div style="font:400 24px 'Lilita One'">${esc(f.n)}</div><div style="font-size:14px;opacity:.85">${sub}</div></div>${b}</div>`,
+ on=FR.l.filter(f=>f.st!=='offline').length;
+ return h+`<div class="row" style="margin:10px 0"><input id="fin" class="t" style="width:240px;font-size:18px;letter-spacing:0;text-transform:none" maxlength="12" placeholder="Add friend by username" value="${esc(FQ)}" oninput="FQ=this.value" onkeydown="if(event.key==='Enter')frAdd()"><button class="b md" onclick="frAdd()">Add friend</button></div><p class="msg">${esc(FR.msg)}</p>
+ <h3 style="font-size:20px">Friend requests ${FR.in.length?'('+FR.in.length+')':''}</h3>${FR.in.map(f=>row(f,'wants to be your friend',`<button class="chip on" onclick="frAcc(${f.id})">Accept</button><button class="chip" onclick="frDel(${f.id})">Decline</button>`)).join('')}${FR.out.map(f=>row(f,'request sent',`<button class="chip" onclick="frDel(${f.id})">Cancel</button>`)).join('')}${FR.in.length||FR.out.length?'':'<p style="opacity:.7">No requests right now.</p>'}
+ <h3 style="font-size:20px">Your friends (${on} online / ${FR.l.length})</h3>${FR.l.map(f=>row(f,ST[f.st]+(f.st==='playing'&&!f.sp?' · spectating off':''),`${f.st==='playing'&&f.room&&f.sp?`<button class="chip on" onclick="spectate('${esc(f.room)}')">👁 Spectate</button>`:''}<button class="chip" onclick="if(confirm('Remove ${esc(f.n)}?'))frDel(${f.id})">Remove</button>`)).join('')||'<p style="opacity:.7">No friends yet. Add someone above.</p>'}`}
 const PANES={
- friends(){cfg.friends=cfg.friends||[];return `<h2>Friends</h2><div class="row"><input id="fin" class="t" style="width:170px;font-size:16px;letter-spacing:0;text-transform:none" maxlength="12" placeholder="Username"><button class="chip on" onclick="addFr()">Add friend</button></div><p class="msg">${esc(AMSG)}</p>${cfg.friends.length?cfg.friends.map((f,i)=>`<div class="pl"><div style="flex:1"><b>${esc(f)}</b><br><small>⚪ Status shows once online friends are connected</small></div><button class="chip" disabled>👁 Spectate</button><button class="chip" onclick="cfg.friends.splice(${i},1);save();menuR()">Remove</button></div>`).join(''):'<p style="opacity:.8">No friends yet. Add a username above.</p>'}<h3>Privacy</h3>${tgf('req','Allow friend requests')}${tgf('spec','Allow friends to spectate me')}`},
- upd(){return `<h2>Updates</h2>${[['New','Podium results with Employee of the game and shared credit for teamwork','End now button in the game menu','Friends tab with privacy settings','Calmer music, fewer speech bubbles, bigger chef preview, Soft sound style'],['Before','Chef textures and custom sound files']].map(([v,...l])=>`<div class="pl"><div><b>${v}</b><ul style="margin:4px 0;padding-left:18px;font-size:14px;line-height:1.5">${l.map(x=>`<li>${x}</li>`).join('')}</ul></div></div>`).join('')}`},
+ friends(){return friendsView()},
+ upd(){return `<h2>Updates</h2>${[['New','Podium results with Employee of the game and shared credit for teamwork','End now button in the game menu','Online friends: requests, status, spectating. Privacy lives in Settings','Smaller walk animation, legs stay attached','Interact with the closest spot','Calmer music, fewer speech bubbles, bigger chef preview, Soft sound style'],['Before','Chef textures and custom sound files']].map(([v,...l])=>`<div class="pl"><div><b>${v}</b><ul style="margin:4px 0;padding-left:18px;font-size:14px;line-height:1.5">${l.map(x=>`<li>${x}</li>`).join('')}</ul></div></div>`).join('')}`},
  play(){return `<div style="display:flex;height:100%;align-items:center"><div style="flex:1;display:flex;flex-direction:column;align-items:center;zoom:var(--z,1)"><div class="logo" style="font-size:54px">Kitchen Chaos</div><div class="sub">cook together. panic together.</div>
   <button class="b xl" onclick="goSetup()">PLAY LOCAL</button><button class="b lg" onclick="goCreate()">Create Room</button><button class="b md" onclick="goJoin()">Join Room</button>
   <div class="row" style="margin-top:10px"><b>Name:</b><input id="nin" class="t" style="width:150px;font-size:16px;letter-spacing:1px;text-transform:none;padding:6px" maxlength="12" value="${cfg.me.n}" onchange="setName(this.value)"></div><div id="nmsg" class="msg"></div></div>
@@ -514,7 +542,7 @@ const PANES={
  shop(){const cs=Object.keys(CAT),all=[];cs.forEach(c=>Object.entries(CAT[c]).forEach(([id,v])=>{if(v[1]>0&&(SHF==='all'||SHF===c))all.push([c,id])}));
   return `<div style="display:flex;gap:12px;height:100%"><div style="flex:1;overflow:auto;padding-right:6px"><h2>Shop</h2><p style="margin:0 0 6px;font-size:14px">You have 🪙 ${cfg.coins}. Try items on before you buy. Colors are free!</p><div class="row"><button class="chip ${SHF==='all'?'on':''}" onclick="SHF='all';menuR()">All</button>${cs.map(c=>`<button class="chip ${SHF===c?'on':''}" onclick="SHF='${c}';menuR()">${CP[c]}</button>`).join('')}</div>
   <div class="cards">${all.map(([c,id])=>icard(c,id,1)).join('')}</div></div>${stage(eqBar(1))}</div>`},
- rec(){return `<h2>Recipes & tips</h2>${Object.values(TY).map(t=>`<h3>${t.e} ${t.n}</h3><div class="row">${t.R.map(r=>`<span class="chip" style="width:auto;font-size:13px">${r[0]}: ${r[1].map(i=>t.ing[i]).join(' + ')}</span>`).join('')}</div>`).join('')}<h3>Tips</h3><ul style="margin:0;padding-left:18px;line-height:1.5;font-size:14px"><li>Build in any order. The finished dish looks the same.</li><li>Cooked at 4s, overdone at 8s, burnt at 11s. Trash burnt food.</li><li>Hold a plate and face a crate to add the ingredient directly.</li><li>Served plates come back dirty. Hold E at a sink to wash them.</li><li>Serve in a row for a combo bonus.</li><li>P1: WASD + E. P2: arrows + Enter. Esc pauses.</li></ul>`},
+ rec(){return `<h2>Recipes & tips</h2>${Object.values(TY).map(t=>`<h3>${t.e} ${t.n}</h3><div class="row">${t.R.map(r=>`<span class="chip" style="width:auto;font-size:13px">${r[0]}: ${r[1].map(i=>t.ing[i]).join(' + ')}</span>`).join('')}</div>`).join('')}<h3>Controls</h3><div style="line-height:2.2;font-size:14px">Move: ${kc('↑','←','↓','→')} or ${kc('W','A','S','D')}<br>Grab, drop, cook, serve, wash: ${kc('E')} ${kc('Enter')} ${kc('Space')} (you turn to the closest spot, marked with ▼)<br>2 players: P1 ${kc('W','A','S','D','E')}, P2 ${kc('↑','←','↓','→','Enter')}<br>Pause: ${kc('Esc')}</div><h3>How a round works</h3><ol style="margin:0;padding-left:20px;line-height:1.6;font-size:14px"><li>Read the order tickets at the top.</li><li>Grab ingredients from the crates, put meat on the stove.</li><li>Pick up a plate and add the cooked parts.</li><li>Serve at the green window.</li><li>Wash dirty plates at the sink: hold E.</li></ol><h3>Tips</h3><ul style="margin:0;padding-left:18px;line-height:1.5;font-size:14px"><li>Build in any order. The finished dish looks the same.</li><li>Cooked at 4s, overdone at 8s, burnt at 11s. Trash burnt food.</li><li>Hold a plate and face a crate to add the ingredient directly.</li><li>Served plates come back dirty. Hold E at a sink to wash them.</li><li>Serve in a row for a combo bonus.</li><li>Stand near a spot and press E. You do not need to face it.</li><li>Teammates share credit for dishes they helped cook.</li><li>Rush level goes up as time passes: more orders, less patience.</li><li>P1: WASD + E. P2: arrows + Enter. Esc pauses.</li></ul>`},
  quests(){const tabs=[['h','Hourly'],['d','Daily'],['w','Weekly'],['m','Milestones']];let o='';
   if(QT==='m'){const dn=QUESTS.filter((q,i)=>cfg.claimed.includes(i)).length;o=`<p style="margin:0 0 6px;font-size:14px">${dn}/${QUESTS.length} complete</p>`+QUESTS.map(([n,d,f,m,r],i)=>qrow(n,d,Math.min(f(cfg.stats),m),m,r,cfg.claimed.includes(i),`claim(${i})`)).join('')}
   else{const q=qState(QT),P=PER[QT];o=`<p style="margin:0 0 6px;font-size:14px">New quests in <b class="qt" data-e="${P.end(q.k)}"></b></p>`+qList(QT).map((x,i)=>{const n=x[2][P.i],m=x[1].replace('{n}',n).replace('{s}',n>1?'s':'').replace('{es}',n>1?'es':'');return qrow(m,P.n+' quest',Math.min(qval(q,x),n),n,x[3][P.i],q.cl.includes(i),`claimQ('${QT}',${i})`)}).join('')}
@@ -559,6 +587,7 @@ function mkRoom(n){const code=rcode(),peer=new Peer('kchaos-'+code);NET={host:tr
  peer.on('error',e=>{if(e.type==='unavailable-id'&&n<5){try{peer.destroy()}catch(x){}mkRoom(n+1)}else{NET=null;netMsg('Could not create room: '+e.type)}});
  peer.on('connection',c=>{if(c.label==='fast'){NET.fast=NET.fast||{};NET.fast[c.peer]=c;c.on('data',m=>{const mc=NET.conns.find(x=>x.peer===c.peer);if(mc&&m&&m.t==='in')hostMsg(mc,m)});return}c.on('data',m=>hostMsg(c,m));c.on('close',()=>dropConn(c));c.on('error',()=>dropConn(c))})}
 function hostMsg(c,m){if(!m)return;
+ if(m.t==='spec'){const f=cfg.fs||{spec:1};if(!f.spec||phase!=='play'||!NET.slots){c.send({t:'nospec'});return}(NET.specs=NET.specs||[]).push(c);c.on('close',()=>{NET.specs=(NET.specs||[]).filter(x=>x!==c)});c.send({t:'start',G,slots:NET.slots,seed:NET.seed,you:0,spec:1});return}
  if(m.t==='hello'){if(phase!=='lobby'||LB.length>=4){c.send({t:'full'});setTimeout(()=>c.close(),300);return}
   c.sidx=LB.length;NET.conns.push(c);const L=safeL(m.look);LB.push({name:L.n,look:L,team:LB.length%2});lobbyBc();lobbyUI()}
  else if(m.t==='look'&&c.sidx!==undefined){const L=safeL(m.look);LB[c.sidx].look=L;LB[c.sidx].name=L.n;lobbyBc();lobbyUI()}
@@ -575,10 +604,10 @@ function lobbyUI(){if(!NET||phase!=='lobby')return;const host=NET.host,tm=G.mode
  <p style="font-size:12px;opacity:.8;margin:4px 0">Change your look in the Customize tab.</p>
  <div id="nm" class="msg"></div><div style="text-align:center">${host?`<button class="b md" onclick="startOnline()">Start!</button>`:'<span>Waiting for host…</span>'} <button class="b alt md" onclick="goMenu()">Leave</button></div></div></div></div>`,'lobby')}
 function startOnline(){if(!NET||!NET.host)return;const tm=G.mode==='team';if(tm&&new Set(LB.map(p=>p.team)).size<2){$('#nm').textContent='Team vs Team needs players on both teams (click a team badge).';return}
- const seed=Math.random()*1e9|0,slots=LB.map(p=>({L:p.look,team:tm?p.team:0}));NET.conns.forEach(c=>c.send({t:'start',G,slots,seed,you:c.sidx}));NET.me=0;buildNet(slots,seed,0)}
+ const seed=Math.random()*1e9|0,slots=LB.map(p=>({L:p.look,team:tm?p.team:0}));NET.conns.forEach(c=>c.send({t:'start',G,slots,seed,you:c.sidx}));NET.me=0;NET.slots=slots;NET.seed=seed;buildNet(slots,seed,0)}
 function buildNet(slots,seed,you){au();lastIn='';lastInT=0;G.mode=G.mode==='team'?'team':'coop';DUR=G.len*60;const tm=G.mode==='team',ks=tm?[...new Set(slots.map(s=>s.team))].sort():[0];
  KS=ks.map(tid=>mkK(tid,seed,slots.filter(s=>!tm||s.team===tid).map(s=>s.L)));MAPS_=slots.map(s=>({k:tm?ks.indexOf(s.team):0,pi:slots.filter(x=>!tm||x.team===s.team).indexOf(s)}));
- ME=MAPS_[you];V=KS[ME.k];SCR=KS.map(k=>[k.team,0]);PT=[];paused=false;phase='play';playUI()}
+ ME=MAPS_[you];V=KS[ME.k];SCR=KS.map(k=>[k.team,0]);PT=[];paused=false;phase='play';playUI();hb()}
 function backLobby(){if(!NET||!NET.host)return;GMV=null;phase='lobby';KS=[];V=null;lobbyBc();lobbyUI()}
 function goJoin(msg){if(typeof Peer==='undefined'){netMsg('Online needs the PeerJS script (check your internet connection).');return}phase='join';MODE='online';leaveNet();
  ui(`<div class="ov dim"><div class="panel" style="text-align:center"><h2>Join a room</h2><input id="jc" class="t" maxlength="4" placeholder="CODE" autofocus><div id="nm" class="msg">${msg||''}</div><button class="b md" onclick="joinRoom($('#jc').value)">Join</button><button class="b alt md" onclick="goMenu()">Back</button></div></div>`)}
@@ -591,9 +620,10 @@ function joinRoom(code){code=String(code||'').toUpperCase().replace(/[^A-Z]/g,''
 function guestMsg(m){if(!m)return;
  if(m.t==='full'){leaveNet();goJoin('Room is full or already playing.')}
  else if(m.t==='lobby'){G=Object.assign({},GD,m.G);LB=m.pl;NET.me=m.you;if(phase!=='lobby'){phase='lobby';KS=[];V=null}lobbyUI()}
- else if(m.t==='start'){G=Object.assign({},GD,m.G);NET.me=m.you;buildNet(m.slots,m.seed,m.you)}
+ else if(m.t==='start'){G=Object.assign({},GD,m.G);NET.me=m.you;buildNet(m.slots,m.seed,m.you);if(m.spec){NET.spec=1;ME={k:0,pi:-1}}}
+ else if(m.t==='nospec'){leaveNet();goMenu('friends');FR.msg='They are not spectatable right now.'}
  else if(m.t==='snap'&&phase==='play'&&V)apply(m.d);
- else if(m.t==='end')showRes(m.r)}
+ else if(m.t==='end'){if(NET.spec){leaveNet();goMenu('friends')}else showRes(m.r)}}
 function snap(K){const tl=[];K.tiles.forEach(row=>row.forEach(t=>{if(t.item||t.dirty||t.clean||t.prog||'PD'.includes(t.ch))tl.push([t.r,t.c,t.item,t.n,t.dirty,t.clean,+t.prog.toFixed(2)])}));
  return{t:+K.t.toFixed(2),s:K.score,o:K.orders,tl,sh:K.shake,sc:KS.map(k=>[k.team,k.score]),ev:K.ev,p:K.pl.map(p=>({x:+p.x.toFixed(2),y:+p.y.toFixed(2),fx:p.fx,fy:p.fy,i:p.item,mv:p.mv,w:p.wash,ph:+p.ph.toFixed(1),d:p.d,pts:p.pts}))}}
 function apply(d){const K=V;if(d.t<=(K.lS||0))return;K.lS=d.t;K.t=d.t;K.score=d.s;K.orders=d.o||[];SCR=d.sc;K.shake=Math.max(K.shake,d.sh||0);
@@ -603,7 +633,7 @@ function apply(d){const K=V;if(d.t<=(K.lS||0))return;K.lS=d.t;K.t=d.t;K.score=d.
   if(p.tx===undefined||e>1){p.x=q.x;p.y=q.y}else if(mine&&(!p.mv||e>.5)){p.x+=(q.x-p.x)*.3;p.y+=(q.y-p.y)*.3}
   p.tx=q.x;p.ty=q.y;p.item=q.i;p.wash=q.w;p.d=q.d;p.pts=q.pts;if(!mine){p.fx=q.fx;p.fy=q.fy;p.mv=q.mv;p.ph=q.ph}});
  (d.ev||[]).forEach(e=>fx(K,e[0],e[1],e[2],e[3],e[4]));K.flash=0}
-let lastIn='',lastInT=0;function sendIn(){if(!NET||NET.host||!NET.c)return;const m=readKeys()(0),k=JSON.stringify(m),now=performance.now();if(k!==lastIn||now-lastInT>120){lastIn=k;lastInT=now;try{(NET.f&&NET.f.open?NET.f:NET.c).send({t:'in',...m})}catch(e){}}}
+let lastIn='',lastInT=0;function sendIn(){if(!NET||NET.host||!NET.c||NET.spec)return;const m=readKeys()(0),k=JSON.stringify(m),now=performance.now();if(k!==lastIn||now-lastInT>120){lastIn=k;lastInT=now;try{(NET.f&&NET.f.open?NET.f:NET.c).send({t:'in',...m})}catch(e){}}}
 
 /* ================= INPUT ================= */
 addEventListener('keydown',e=>{if(e.target.tagName==='INPUT')return;if(phase==='play'){
@@ -611,7 +641,7 @@ addEventListener('keydown',e=>{if(e.target.tagName==='INPUT')return;if(phase==='
   if(e.code==='Escape'&&!V.over){GMV?closeGM():openGM();return}
   keys[e.code]=true;if(e.repeat||paused||V.over)return;
   if(MODE==='local'){V.pl.forEach((p,i)=>{const b=G.n===2?KB[i]:KM;if(b.a.includes(e.code))act(V,p)})}
-  else if(KM.a.includes(e.code)){if(NET.host)act(KS[ME.k],KS[ME.k].pl[ME.pi]);else if(NET.c){try{NET.c.send({t:'act'})}catch(e){}}}}});
+  else if(KM.a.includes(e.code)){if(NET.host)act(KS[ME.k],KS[ME.k].pl[ME.pi]);else if(NET.c&&!NET.spec){try{NET.c.send({t:'act'})}catch(e){}}}}});
 addEventListener('keyup',e=>keys[e.code]=false);addEventListener('blur',()=>{for(const k in keys)keys[k]=false;if(phase==='play'&&MODE==='local'&&!paused&&!V.over)openGM()});
 
 document.addEventListener('pointerdown',()=>au(),{once:true});
