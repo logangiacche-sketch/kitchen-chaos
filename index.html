@@ -43,7 +43,7 @@ h3{margin:10px 0 4px;font-size:15px}
 .mnav .tb{font-size:clamp(18px,2.2vw,26px);background:rgba(35,45,92,.75);padding:9px 14px}.mnav .slogo{height:auto;margin-bottom:14px;font-size:clamp(24px,3vw,36px)}
 .mmain{position:absolute;left:clamp(150px,16vw,230px);right:0;top:0;bottom:0;padding:30px 4vw;box-sizing:border-box;overflow:auto;text-shadow:0 2px 5px #0009}
 .mtop{position:absolute;right:26px;top:16px;font:400 clamp(18px,2vw,26px) 'Lilita One';text-shadow:0 2px 6px #000}
-.gmb{position:absolute;right:6px;bottom:6px;font:400 12px 'Lilita One',sans-serif;background:rgba(35,45,92,.88);color:var(--ink);border:2px solid var(--gold);border-radius:8px;padding:2px 8px;cursor:pointer;opacity:.85}
+.gmb{position:absolute;right:12px;bottom:12px;font:400 26px 'Lilita One',sans-serif;background:rgba(35,45,92,.95);color:var(--ink);border:3px solid var(--gold);border-radius:14px;padding:12px 26px;cursor:pointer;box-shadow:0 4px 14px #0009}.gmb:active{transform:scale(.96)}#inv{position:absolute;inset:0;z-index:40;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.55)}
 .ic{width:92px;background:#161d3a;border:3px solid var(--rc,#3d4a85);border-radius:14px;padding:6px 4px;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;font-size:12px;text-align:center;transition:transform .1s}
 .ic:hover{transform:translateY(-3px) scale(1.04)}.ic.sl{background:#3a3050;box-shadow:0 0 0 3px var(--gold)}.ic i{font-size:36px;height:64px;line-height:64px;font-style:normal}
 .tag{font:800 10px Nunito,sans-serif;padding:2px 7px;border-radius:99px;background:#3a4680}
@@ -67,7 +67,7 @@ h3{margin:10px 0 4px;font-size:15px}
  Then paste Project URL + anon public key below. (The anon key is meant to be public; RLS protects the data.) */
 const SB_URL='https://eonvszcqwolmbfpjpdsx.supabase.co',SB_KEY='sb_publishable_FLr7yTgNAwXOk7Mpon6d9Q_fCBd4_rX';
 const $=s=>document.querySelector(s),T=56,W=13,H=9,OY=70,LIFT=12,CW=W*T,CH=H*T+OY;
-const MAP=["#12345#PP#OO#","S...........S","#...#####...#","S...........S","#...........#","#...#####...#","W...........W","#...........#","#XX#DD#WW####"];
+const MAP=["#12345#PP#OO#","S...........S","#...#####...#","S...........S","#...........#","#...#####...#","W...........W","#...........#","#XX#DD#WW#G##"];
 const TY={
  burger:{e:'🍔',n:'Burger Joint',ing:['bun','patty','cheese','lettuce','tomato'],cook:1,fl:['#f1e6cc','#e0cfa6'],R:[['Plain',[0,1],1],['Cheesy',[0,1,2],1],['Salad',[0,1,3,4],2],['Deluxe',[0,1,2,3,4],3]]},
  taco:{e:'🌮',n:'Taco Truck',ing:['shell','beef','cheese','lettuce','tomato'],cook:1,fl:['#f7e0b8','#e9c68c'],R:[['Beef Taco',[0,1],1],['Cheesy',[0,1,2],1],['Fresh',[0,1,3,4],2],['Supreme',[0,1,2,3,4],3]]},
@@ -145,8 +145,9 @@ function ing(k,s,x,y){const P=G.type==='pizza';
 function drawItem(it){
  if(it.c){if(!timg('plate_clean','',0,0,48,32,.5,20/32)){ell(0,2,21,10,['#fff','#c3c9d1'],'#8a929c');ell(0,0,16,7,['#f4f6f8','#dfe4ea'])}let dy=0;[...it.c].sort((a,b)=>a.i-b.i).forEach(q=>{ing(nm(q.i),st4(q),0,-3-dy);dy+=G.type==='pizza'?2:4.5});if(G.type==='burger'&&it.c.some(q=>q.i===0))ing('buntop',0,0,-4-dy)}
  else if(it.dy){if(!timg('plate_dirty','',0,0,48,32,.5,20/32)){ell(0,0,19,9,['#c8c2b4','#9b9484'],'#7a7262');ell(-5,-1,7,3,'#8a6a3c');ell(6,1,4,2,'#a04030')}}
- else ing(nm(it.i),st4(it),0,-3)}
-const ikey=it=>it.c?'P['+it.c.map(q=>q.i+':'+st4(q)).join()+']':it.dy?'D':it.i+':'+st4(it);
+ else if(it.pan){ell(0,3,23,11,'#0005');ell(0,1,21,10,['#6a6a6a','#2b2b2b'],'#111');ell(0,0,16,7,['#3a3a3a','#1c1c1c']);rr(18,-3,18,6,3,'#222');if(it.m)ing(nm(it.m.i),st4(it.m),0,-4)}
+ else{ing(nm(it.i),st4(it),0,-3);if(it.g)for(let i=0;i<7;i++)ell(-10+i*3.4,-6+(i%3)*3,1.6,1.3,'#4a2d12')}}
+const ikey=it=>it.c?'P['+it.c.map(q=>q.i+':'+st4(q)).join()+']':it.dy?'D':it.pan?'N'+(it.m?it.m.i+':'+st4(it.m)+(it.m.g?'g':''):''):it.i+':'+st4(it)+(it.g?'g':'');
 function put(it,x,y,s=1){const sp=spr(G.type+ikey(it),76,96,()=>{g.translate(38,76);drawItem(it)});g.drawImage(sp,x-38*s,y-76*s,76*s,96*s)}
 function bar(x,y,w,v,c){rr(x,y,w,8,4,'#000a');rr(x+1,y+1,Math.max(0,(w-2)*v),6,3,c)}
 function hat(k,x,y,L){const c=L.hc||'#e8452c',F=L.hf||'#ffffff';
@@ -216,17 +217,18 @@ function face(x,y,r,sk,v){ell(x,y,r,r,sk);ell(x-r*.35,y-r*.15,r*.13,r*.2,'#222')
 
 /* blocks (3D counters with textures) */
 function block(ch){return spr('b'+G.type+ch+cfg.gq,T,T+LIFT,()=>{
- const k=ch>='1'&&ch<='5'?+ch-1:-1,ste=ch==='S'||ch==='W'||ch==='X';
+ const k=ch>='1'&&ch<='5'?+ch-1:-1,ste=ch==='S'||ch==='W'||ch==='X'||ch==='G';
  g.fillStyle='#0003';g.fillRect(2,T+LIFT-2,T-4,3);
  if(ste){steel(1,T-6,T-2,LIFT+6,'#8f98a6','#5d6573')}else wood(1,T-6,T-2,LIFT+6,'#a8773c','#7a5224',ch.charCodeAt(0));
  g.save();g.beginPath();g.roundRect(1,0,T-2,T-2,8);g.clip();
  if(ch==='S')steel(0,0,T,T,'#4a505c','#2a2e37');else if(ch==='W')steel(0,0,T,T,'#e3e8ef','#a9b3c1');else if(ch==='X')steel(0,0,T,T,'#59627a','#363d52');
- else if(ch==='O')rr(0,0,T,T,['#8cecaa','#3f9a5c']);else wood(0,0,T,T,'#e4c48c','#c99d5c',ch.charCodeAt(0)*7);
+ else if(ch==='G')steel(0,0,T,T,'#8a7fa6','#4d4468');else if(ch==='O')rr(0,0,T,T,['#8cecaa','#3f9a5c']);else wood(0,0,T,T,'#e4c48c','#c99d5c',ch.charCodeAt(0)*7);
  g.restore();rr(5,3,T-10,4,2,'rgba(255,255,255,.28)');
- txt(k>=0?nm(k).toUpperCase():ch==='S'?'STOVE':({P:'PLATES',W:'SINK',X:'TRASH',O:'SERVE',D:'DIRTY'}[ch]||''),T/2,T+LIFT-3,10,ste?'#fffd':'#2a1a00cc','center','Nunito');
+ txt(k>=0?nm(k).toUpperCase():ch==='S'?'STOVE':({G:'GRINDER',P:'PLATES',W:'SINK',X:'TRASH',O:'SERVE',D:'DIRTY'}[ch]||''),T/2,T+LIFT-3,10,ste?'#fffd':'#2a1a00cc','center','Nunito');
  const cx=T/2,cy=T/2;
  if(k>=0){rr(7,9,T-14,T-18,6,['#b07a3c','#7a5224']);g.strokeStyle='#4a2e10';g.lineWidth=1.5;g.strokeRect(9,12,T-18,T-24);ell(cx,cy+3,18,9,'#0004');const q={i:k,cook:k===tp().cook?0:undefined};for(let i=0;i<2;i++)put(q,cx,cy+3-i*4,1.1)}
  else if(ch==='S'){rr(5,4,T-10,T-12,8,'#15171c');}
+ else if(ch==='G'){rr(12,5,T-24,T-26,6,['#dfe3ea','#9aa3b2']);rr(T/2-4,T-22,8,13,2,'#555');ell(T/2,T-8,8,3,'#0006');rr(T-14,9,8,3,1,'#c33')}
  else if(ch==='W'){rr(7,10,T-14,T-24,8,['#9fd4ff','#4a9be0']);rr(7,10,T-14,3,2,'#fff8');rr(T/2-3,2,6,9,2,'#c5ccd6');rr(T/2-8,2,16,3,1,'#c5ccd6')}
  else if(ch==='X'){ell(cx,cy,19,11,'#222');ell(cx,cy-2,15,8,'#0b0d14');ell(cx,cy+4,10,3,'#2a3040')}
  else if(ch==='O'){rr(6,6,T-12,10,4,'#fff8');ell(cx,cy+10,12,5,['#ffe066','#d9a400']);ell(cx,cy+6,9,7,['#ffe066','#d9a400']);ell(cx,cy-0,2,2,'#fff')}})}
@@ -239,11 +241,11 @@ function stoveFront(side){return spr('sf'+side+cfg.gq,T,T,()=>{const x0=side==='
 function dyn(K,r,c){const t=K.tiles[r][c],ch=t.ch,x=c*T,y=OY+r*T,cx=x+T/2,cy=y+T/2-LIFT;g.drawImage(block(ch),x,y-LIFT,T,T+LIFT);if(ch==='S')g.drawImage(stoveFront(c<W/2?'L':'R'),x,y-LIFT,T,T);
  if(ch==='P')for(let i=0;i<Math.min(t.n,8);i++){ell(cx,cy+9-i*3.5,20,8.5,['#fff','#cfd4da'],'#9aa')}
  else if(ch==='D')for(let i=0;i<Math.min(t.n,6);i++)put({dy:1},cx,cy+10-i*4,.9);
- else if(ch==='S'&&t.item){const gl=g.createRadialGradient(cx,cy+4,2,cx,cy+4,24);gl.addColorStop(0,'rgba(255,140,30,.75)');gl.addColorStop(1,'rgba(255,90,0,0)');g.fillStyle=gl;g.fillRect(x,y-LIFT,T,T);ell(cx,cy+4,17,10,'#2b2f38','#0a0b0e')}
+ else if(ch==='S'&&t.item&&(!t.item.pan||t.item.m)){const gl=g.createRadialGradient(cx,cy+4,2,cx,cy+4,24);gl.addColorStop(0,'rgba(255,140,30,.75)');gl.addColorStop(1,'rgba(255,90,0,0)');g.fillStyle=gl;g.fillRect(x,y-LIFT,T,T);ell(cx,cy+4,17,10,'#2b2f38','#0a0b0e')}
  else if(ch==='W'){for(let i=0;i<Math.min(t.dirty,4);i++)put({dy:1},cx-8,cy+8-i*4,.7);for(let i=0;i<Math.min(t.clean,4);i++)ell(cx+10,cy+8-i*3,9,4,['#fff','#cfd4da'],'#9aa');
   if(t.dirty)txt('hold E',cx,y-LIFT-4,11,'#fff','center','Nunito');if(t.prog>0)bar(x+8,y-LIFT-22,T-16,t.prog,'#59b8ff')}
- if(ch==='S'&&t.item&&TEX.flame){const b=BS(c<W/2?'L':'R'),f=V.t*14|0;[[b[0],18],[b[1],18],[b[0],38],[b[1],38]].forEach(([a,e],i)=>g.drawImage(TEX.flame,((f+i)%4)*32,0,32,48,x+a-9,y-LIFT+e-22,18,27))}
- if(t.item){put(t.item,cx,cy+3);if(ch==='S'){const q=t.item,w=q.cook<4?'#59b8ff':q.cook<8?'#6ccf4f':q.cook<11?'#ff9d2e':'#e53935',bl=q.cook>=8&&Math.floor(V.t*6)%2;bar(x+8,y-LIFT-20,T-16,q.cook<4?q.cook/4:1,bl?'#fff':w);if(q.cook>=8)txt(q.cook>=11?'BURNT':'!',cx,y-LIFT-26,13,'#ff6b4a','center')}}}
+ if(ch==='S'&&t.item&&(!t.item.pan||t.item.m)&&TEX.flame){const b=BS(c<W/2?'L':'R'),f=V.t*14|0;[[b[0],18],[b[1],18],[b[0],38],[b[1],38]].forEach(([a,e],i)=>g.drawImage(TEX.flame,((f+i)%4)*32,0,32,48,x+a-9,y-LIFT+e-22,18,27))}
+ if(ch==='G'&&t.prog>0)bar(x+8,y-LIFT-22,T-16,t.prog,'#c9a0ff');if(t.item){put(t.item,cx,cy+3);if(ch==='S'){const q=t.item.pan?t.item.m:t.item;if(q){const w=q.cook<4?'#59b8ff':q.cook<8?'#6ccf4f':q.cook<11?'#ff9d2e':'#e53935',bl=q.cook>=8&&Math.floor(V.t*6)%2;bar(x+8,y-LIFT-20,T-16,q.cook<4?q.cook/4:1,bl?'#fff':w);if(q.cook>=8)txt(q.cook>=11?'BURNT':'!',cx,y-LIFT-26,13,'#ff6b4a','center')}}}}
 function bg(){return spr('bg'+G.type+cfg.gq,CW,CH,()=>{
  g.fillStyle='#10162e';g.fillRect(0,0,CW,CH);const f=tp().fl,r=R(5);
  for(let rw=0;rw<H;rw++)for(let c=0;c<W;c++)if(MAP[rw][c]==='.'){const x=c*T,y=OY+rw*T;rr(x,y,T,T,0,(rw+c)%2?[f[0],f[1]]:[f[1],f[0]]);
@@ -254,7 +256,7 @@ function bg(){return spr('bg'+G.type+cfg.gq,CW,CH,()=>{
 /* ================= GAME LOGIC ================= */
 const isP=i=>i&&i.c,isD=i=>i&&i.dy,isI=i=>i&&i.i!==undefined,cookI=()=>tp().cook;
 function mkK(team,seed,looks){const K={team,t:0,score:0,orders:[],nx:2,oid:0,ret:[],ev:[],rng:R(seed),streak:0,over:0,flash:0,shake:0,st:{done:0,fail:0,burnt:0,waste:0,ct:0},
- tiles:MAP.map((row,r)=>[...row].map((ch,c)=>({ch,r,c,item:null,n:ch==='P'?8:0,dirty:0,clean:0,prog:0}))),pl:[]};
+ tiles:MAP.map((row,r)=>[...row].map((ch0,c)=>{const ch=ch0==='G'&&G.type!=='taco'?'#':ch0;return{ch,r,c,item:ch==='S'&&(G.type==='burger'||G.type==='taco')?{pan:1,m:null}:null,n:ch==='P'?8:0,dirty:0,clean:0,prog:0}})),pl:[]};
  looks.forEach((L,i)=>K.pl.push({x:4.5+i*1.6,y:4.5,fx:0,fy:1,item:null,L,mv:0,ph:0,wash:0,d:0,pts:0,inp:{dx:0,dy:0,a:0},say:null}));return K}
 const rush=K=>Math.min(5,1+Math.floor(K.t/(DUR/5)));
 const solid=(x,y)=>{const c=Math.floor(x),r=Math.floor(y);return c<0||r<0||c>=W||r>=H||MAP[r][c]!=='.'};
@@ -265,14 +267,21 @@ const emit=(K,ty,x,y,pi,a)=>{if(NET)K.ev.push([ty,x,y,pi,a]);if(K===V)fx(K,ty,x,
 function say(K,p,arr){if(Math.random()<.12)emit(K,'say',0,0,K.pl.indexOf(p),arr[Math.random()*arr.length|0])}
 function canAdd(pl,q){return isP(pl)&&isI(q)&&!pl.c.some(x=>x.i===q.i)&&(q.cook===undefined||(q.cook>=4&&q.cook<11))}
 function act(K,p){const t=tgt(K,p);if(!t||K.over)return;const ch=t.ch,it=p.item,pi=K.pl.indexOf(p),cx=t.c*T+T/2,cy=OY+t.r*T,ci=ch>='1'&&ch<='5'?+ch-1:-1;
- if(ci>=0){if(!it){p.item=ci===cookI()?{i:ci,cook:0,by:pi}:{i:ci,by:pi};emit(K,'pick',cx,cy,pi)}else if(ci!==cookI()&&canAdd(it,{i:ci})){it.c.push({i:ci,by:pi});emit(K,'pick',cx,cy,pi)}return}
+ if(ci>=0){if(it&&it.pan){if(ci===cookI()&&G.type==='burger'&&!it.m){it.m={i:ci,cook:0,by:pi};emit(K,'pick',cx,cy,pi)}else if(ci===cookI()&&G.type==='taco')emit(K,'say',0,0,pi,'Grind it first!');return}if(!it){p.item=ci===cookI()?{i:ci,cook:0,by:pi}:{i:ci,by:pi};emit(K,'pick',cx,cy,pi)}else if(ci!==cookI()&&canAdd(it,{i:ci})){it.c.push({i:ci,by:pi});emit(K,'pick',cx,cy,pi)}return}
  if(ch==='P'){if(!it&&t.n>0){t.n--;p.item={c:[]};emit(K,'plate',cx,cy,pi)}else if(isP(it)&&!it.c.length){t.n++;p.item=null;emit(K,'plate',cx,cy,pi)}return}
  if(ch==='D'){if(!it&&t.n>0){t.n--;p.item={dy:1};emit(K,'plate',cx,cy,pi)}else if(isD(it)){t.n++;p.item=null;emit(K,'plate',cx,cy,pi)}return}
  if(ch==='W'){if(isD(it)){t.dirty++;p.item=null;emit(K,'put',cx,cy,pi)}else if(!it&&t.clean>0){t.clean--;p.item={c:[]};emit(K,'plate',cx,cy,pi)}return}
- if(ch==='X'){if(isP(it)){K.st.waste+=it.c.length;it.c=[]}else if(it&&!isD(it)){K.st.waste++;p.item=null}else return;emit(K,'trash',cx,cy,pi);say(K,p,['Bye bye!','Into the bin!']);return}
+ if(ch==='X'){if(it&&it.pan){if(it.m){K.st.waste++;it.m=null}else return}else if(isP(it)){K.st.waste+=it.c.length;it.c=[]}else if(it&&!isD(it)){K.st.waste++;p.item=null}else return;emit(K,'trash',cx,cy,pi);say(K,p,['Bye bye!','Into the bin!']);return}
  if(ch==='O'){if(isP(it)&&it.c.length){serve(K,p,it,cx,cy,pi)}else emit(K,'no',cx,cy,pi);return}
- if(ch==='S'){if(isI(it)&&it.cook!==undefined&&!t.item){t.item=it;p.item=null;emit(K,'put',cx,cy,pi)}else if(!it&&t.item){p.item=t.item;t.item=null;emit(K,'pick',cx,cy,pi)}else if(isP(it)&&t.item&&canAdd(it,t.item)){it.c.push(t.item);t.item=null;emit(K,'pick',cx,cy,pi)}return}
- if(ch==='#'){const o=t.item;if(!it&&o){p.item=o;t.item=null;emit(K,'pick',cx,cy,pi)}else if(it&&!o){t.item=it;p.item=null;emit(K,'put',cx,cy,pi)}else if(it&&o){if(canAdd(it,o)){it.c.push(o);t.item=null;emit(K,'pick',cx,cy,pi)}else if(canAdd(o,it)){o.c.push(it);p.item=null;emit(K,'pick',cx,cy,pi)}}}}
+ if(ch==='S'){if(panAct(K,p,t,cx,cy,pi))return;if(G.type==='pizza'&&isI(it)&&it.cook!==undefined&&!t.item){t.item=it;p.item=null;emit(K,'put',cx,cy,pi)}else if(!it&&t.item){p.item=t.item;t.item=null;emit(K,'pick',cx,cy,pi)}else if(isP(it)&&t.item&&canAdd(it,t.item)){it.c.push(t.item);t.item=null;emit(K,'pick',cx,cy,pi)}return}
+ if(ch==='G')return;
+ if(ch==='#'){if(panAct(K,p,t,cx,cy,pi))return;const o=t.item;if(!it&&o){p.item=o;t.item=null;emit(K,'pick',cx,cy,pi)}else if(it&&!o){t.item=it;p.item=null;emit(K,'put',cx,cy,pi)}else if(it&&o){if(canAdd(it,o)){it.c.push(o);t.item=null;emit(K,'pick',cx,cy,pi)}else if(canAdd(o,it)){o.c.push(it);p.item=null;emit(K,'pick',cx,cy,pi)}}}}
+function panAct(K,p,t,cx,cy,pi){const it=p.item,o=t.item,pan=o&&o.pan?o:null;
+ if(pan){if(isI(it)&&it.cook!==undefined&&!pan.m){if(G.type==='taco'&&!it.g){emit(K,'say',0,0,pi,'Grind the beef first!');emit(K,'no',cx,cy,pi);return 1}pan.m=it;p.item=null;emit(K,'put',cx,cy,pi);return 1}
+  if(isP(it)&&pan.m){if(!it.c.some(x=>x.i===0)){emit(K,'say',0,0,pi,'Plate needs a '+tp().ing[0]+' first!');emit(K,'no',cx,cy,pi);return 1}
+   if(canAdd(it,pan.m)){it.c.push(pan.m);pan.m=null;emit(K,'pick',cx,cy,pi)}else emit(K,'no',cx,cy,pi);return 1}
+  if(!it){p.item=pan;t.item=null;emit(K,'pick',cx,cy,pi);return 1}return 0}
+ if(it&&it.pan&&!o){t.item=it;p.item=null;emit(K,'put',cx,cy,pi);return 1}return 0}
 function serve(K,p,pl,cx,cy,pi){const ids=pl.c.map(q=>q.i).sort().join(),o=K.orders.find(o=>[...o.ri].sort().join()===ids);
  if(!o){K.score=Math.max(0,K.score-5);K.streak=0;K.flash=-1;K.shake=6;p.item=null;K.ret.push({t:5});emit(K,'bad',cx,cy,pi);say(K,p,QBAD);return}
  const over=pl.c.some(q=>q.cook>=8)?.6:1,base=8*o.ri.length,pts=Math.round((base+base*.5*o.t/o.max)*over)+2*Math.min(K.streak,5);
@@ -282,9 +291,10 @@ function upd(K,dt){if(K.over)return;K.t+=dt;K.flash=0;K.shake=Math.max(0,K.shake
  K.pl.forEach((p,pi)=>{const{dx,dy,a}=p.inp;if(dx||dy){const l=Math.hypot(dx,dy),sp=4.4*dt/l;tryMove(K,p,dx*sp,0);tryMove(K,p,0,dy*sp);p.mv=1;p.ph+=dt*13/(p.L.sz||1);
    if(dx&&!dy){p.fx=dx;p.fy=0}else if(dy&&!dx){p.fx=0;p.fy=dy}else if(p.fx!==dx&&p.fy!==dy){p.fx=dx;p.fy=0}}else p.mv=0;
   if(p.say&&(p.say.t-=dt)<=0)p.say=null;p.wash=0;const t=tgt(K,p);if(t&&t.ch==='W'&&a&&!p.item&&t.dirty>0)turnTo(p,t);
-  if(t&&t.ch==='W'&&!p.item&&a&&t.dirty>0){p.wash=1;t.prog+=dt/2.5;if(Math.random()<.08)emit(K,'wash',t.c*T+T/2,OY+t.r*T,pi);if(t.prog>=1){t.prog=0;t.dirty--;t.clean++;emit(K,'done',t.c*T+T/2,OY+t.r*T,pi);say(K,p,['Sparkly!','Squeaky clean!'])}}else if(t&&t.ch==='W')t.prog=0});
+  if(t&&t.ch==='W'&&!p.item&&a&&t.dirty>0){p.wash=1;t.prog+=dt/2.5;if(Math.random()<.08)emit(K,'wash',t.c*T+T/2,OY+t.r*T,pi);if(t.prog>=1){t.prog=0;t.dirty--;t.clean++;emit(K,'done',t.c*T+T/2,OY+t.r*T,pi);say(K,p,['Sparkly!','Squeaky clean!'])}}else if(t&&t.ch==='W')t.prog=0;
+  {const it=p.item;if(t&&t.ch==='G'&&a&&it&&it.cook===0&&!it.g&&it.i===cookI()){p.wash=1;t.prog+=dt*G.cm/3;if(Math.random()<.1)emit(K,'wash',t.c*T+T/2,OY+t.r*T,pi);if(t.prog>=1){t.prog=0;it.g=1;emit(K,'done',t.c*T+T/2,OY+t.r*T,pi);say(K,p,['Freshly ground!'])}}else if(t&&t.ch==='G')t.prog=0}});
  let dT=[];K.tiles.forEach(row=>row.forEach(t=>{if(t.ch==='D')dT.push(t);
-  if(t.ch==='S'&&t.item){const q=t.item,b=q.cook,cx=t.c*T+T/2,cy=OY+t.r*T;q.cook+=dt*G.cm;
+  const q0=t.item&&(t.item.pan?t.item.m:t.item);if(t.ch==='S'&&q0){const q=q0,b=q.cook,cx=t.c*T+T/2,cy=OY+t.r*T;q.cook+=dt*G.cm;
    if(b<4&&q.cook>=4)emit(K,'ready',cx,cy,0);if(b<8&&q.cook>=8)emit(K,'warn',cx,cy,0);
    if(q.cook>=11&&!q.b){q.b=1;K.st.burnt++;K.shake=8;emit(K,'burn',cx,cy,0);const n=K.pl.reduce((a,p)=>!a||Math.hypot(p.x-t.c-.5,p.y-t.r-.5)<Math.hypot(a.x-t.c-.5,a.y-t.r-.5)?p:a,null);n&&say(K,n,QBRN)}}}));
  K.ret=K.ret.filter(r=>{r.t-=dt;if(r.t<=0){dT[Math.random()*dT.length|0].n++;return false}return true});
@@ -327,7 +337,7 @@ function hud(K){g.fillStyle='#1a2048';g.fillRect(0,0,CW,OY);wood(0,0,CW,OY-8,'#6
  const Rr=rush(K);for(let i=0;i<5;i++)rr(120+i*14,44,11,8,3,i<Rr?['#6ccf4f','#b6d63a','#f7b733','#ff7a1a','#e8452c'][i]:'#0006');txt('RUSH '+Rr,122,64,11,'#fff8e7','left','Nunito');
  const n=Math.max(1,K.orders.length),tw=Math.min(128,(CW-212)/n);
  K.orders.forEach((o,i)=>{const x=214+i*tw,w=tw-6,v=o.t/o.max,u=o.t<12&&Math.floor(K.t*4)%2;rr(x,5,w,58,7,u?'#ffd5cc':['#fffaf0','#f0e6cc']);
-  face(x+15,24,10,o.sk,v);txt(o.cn,x+15,50,10,'#2a1a00','center','Nunito');txt(o.rn,x+30,19,13,'#2a1a00');txt('+'+8*o.ri.length,x+w-4,19,11,'#2a8a46','right','Nunito');
+  g.save();g.translate(x+16,42);g.scale(.52,.52);drawItem({c:o.ri.map(i=>({i,cook:i===cookI()?6:undefined,by:0}))});g.restore();txt(o.cn,x+16,57,9,'#2a1a00','center','Nunito');txt(o.rn,x+30,19,13,'#2a1a00');txt('+'+8*o.ri.length,x+w-4,19,11,'#2a8a46','right','Nunito');
   o.ri.forEach((k,j)=>ell(x+36+j*(Math.min(13,(w-44)/o.ri.length)),32,5,5,KC[nm(k)],'#0004'));bar(x+30,45,w-36,v,v>.5?'#6ccf4f':v>.25?'#ff9d2e':'#e53935')})}
 function drawGame(){const K=V;g.save();if(cfg.shake&&K.shake>0)g.translate((Math.random()-.5)*K.shake,(Math.random()-.5)*K.shake);
  g.drawImage(bg(),0,0,CW,CH);
@@ -341,7 +351,7 @@ function drawGame(){const K=V;g.save();if(cfg.shake&&K.shake>0)g.translate((Math
  {const v_=g.createRadialGradient(CW/2,CH/2+OY/2,CH*.35,CW/2,CH/2,CW*.65);v_.addColorStop(0,'rgba(0,0,0,0)');v_.addColorStop(1,'rgba(10,6,30,.38)');g.fillStyle=v_;g.fillRect(0,OY,CW,CH-OY)}g.restore();hud(K);if(paused){g.fillStyle='#000a';g.fillRect(0,OY,CW,CH)}}
 function fxTick(dt){if(V&&phase==='play'&&!paused)V.pl.forEach(p=>{const t=p.L.tr;if(!cfg.parts||!p.mv||!t||t==='none'||Math.random()>.4)return;const x=p.x*T+(Math.random()-.5)*14,y=OY+p.y*T-4;
   if(t==='bubbles')poof(x,y,'#bfe6ff',1,.5);else PT.push({x,y,vx:(Math.random()-.5)*20,vy:-25,l:.7,t:{sparkle:'✨',hearts:'❤',flames:'🔥'}[t],c:'#f66',r:0})});PT=PT.filter(q=>{q.l-=dt;q.x+=q.vx*dt;q.y+=q.vy*dt;q.vy+=(q.t?0:40)*dt;return q.l>0});let n=0;
- if(V)V.tiles.forEach(row=>row.forEach(t=>{if(t.ch==='S'&&t.item){n++;const cx=t.c*T+T/2,cy=OY+t.r*T-30;if(t.item.cook>=8&&Math.random()<.25)poof(cx,cy,'#444',1);else if(Math.random()<.06)poof(cx,cy,'#fff',1)}}));
+ if(V)V.tiles.forEach(row=>row.forEach(t=>{if(t.ch==='S'&&t.item&&(t.item.pan?t.item.m:t.item)){n++;const _q=t.item.pan?t.item.m:t.item;const cx=t.c*T+T/2,cy=OY+t.r*T-30;if(_q.cook>=8&&Math.random()<.25)poof(cx,cy,'#444',1);else if(Math.random()<.06)poof(cx,cy,'#fff',1)}}));
  if(SZG)SZG.gain.setTargetAtTime(phase==='play'&&!paused?Math.min(.22,n*.07):0,AC.currentTime,.1)}
 
 /* ================= LOOP ================= */
@@ -375,7 +385,7 @@ function cleanName(v){const s=String(v||'').normalize('NFKD').replace(/[^\w \-]/
  return s.length<2||BAD.some(w=>f.includes(w)||f2.includes(w))?null:s}
 function setName(v){const c=cleanName(v);if(!c){$('#nmsg').textContent="That name isn't allowed. Try another!";$('#nin').value=cfg.me.n;return}cfg.me.n=c;$('#nin').value=c;$('#nmsg').textContent='Saved!';$('#pn').textContent=c;save()}
 const PAL=['#ffffff','#e8452c','#ff8a3d','#f7b733','#3bb273','#2aa7a7','#2b8cff','#8e5bd9','#ff6fae','#333333','#8a5a2b','#c0c6d0'],EYC=['#222222','#3a6fd8','#2f9a5a','#8a5a2b','#7a3fd0','#c0392b'];
-const CAT={hat:{chef:['Chef hat',0],none:['No hat',0],cap:['Cap',60],beanie:['Beanie',80],party:['Party hat',120],crown:['Crown',300],band:['Headband',40],bandana:['Bandana',70],tophat:['Top hat',150],cowboy:['Cowboy',180],bunny:['Bunny ears',160],wizard:['Wizard',220],halo:['Halo',350]},cl:{plain:['Plain',0],stripes:['Stripes',90],dots:['Polka dots',110],checker:['Checkered',160],vstripes:['Pinstripes',100],stars:['Stars',140],diamond:['Diamonds',150],split:['Two-tone',120],camo:['Camo',180]},ap:{none:['No apron',0],plain:['Classic',0],striped:['Striped',80],pocket:['Pocket',100],heart:['Hearts',200],checker:['Checkered',120],flame:['Flames',180],denim:['Denim',140],tux:['Tuxedo',260]},sh:{sneaker:['Sneakers',0],clog:['Clogs',70],boot:['Boots',90],sparkle:['Sparkle',250],flip:['Flip-flops',50],hitop:['High-tops',110],skates:['Roller skates',300]},ac:{none:['None',0],glasses:['Glasses',80],stache:['Mustache',100],shades:['Shades',120],goggles:['Goggles',130],monocle:['Monocle',150]},tr:{none:['None',0],sparkle:['Sparkles',120],hearts:['Hearts',150],bubbles:['Bubbles',200],flames:['Flames',250]}};
+const CAT={hat:{chef:['Chef hat',0],none:['No hat',0],cap:['Cap',60],beanie:['Beanie',80],party:['Party hat',120],crown:['Crown',300],band:['Headband',40],bandana:['Bandana',70],tophat:['Top hat',150],cowboy:['Cowboy',180],bunny:['Bunny ears',160],wizard:['Wizard',220],halo:['Halo',350]},cl:{plain:['Plain',0],stripes:['Stripes',90],dots:['Polka dots',110],checker:['Checkered',160],vstripes:['Pinstripes',100],stars:['Stars',140],diamond:['Diamonds',150],split:['Two-tone',120],camo:['Camo',180]},ap:{none:['No apron',0],plain:['Classic',0],striped:['Striped',80],pocket:['Pocket',100],heart:['Hearts',200],checker:['Checkered',120],flame:['Flames',180],denim:['Denim',140],tux:['Tuxedo',260]},sh:{sneaker:['Sneakers',0],clog:['Clogs',70],boot:['Boots',90],sparkle:['Sparkle',250],flip:['Flip-flops',50],hitop:['High-tops',110]},ac:{none:['None',0],glasses:['Glasses',80],stache:['Mustache',100],shades:['Shades',120],goggles:['Goggles',130],monocle:['Monocle',150]},tr:{none:['None',0],sparkle:['Sparkles',120],hearts:['Hearts',150],bubbles:['Bubbles',200],flames:['Flames',250]}};
 const CN={hat:'Hat',cl:'Clothes',ap:'Apron',sh:'Shoes',ac:'Face',tr:'Trail',ot:'Body'},CI={hat:'🎩',cl:'👕',ap:'👨‍🍳',sh:'👟',ac:'🕶️',tr:'✨',ot:'🧍'},CP={hat:'Hats',cl:'Clothes',ap:'Aprons',sh:'Shoes',ac:'Face gear',tr:'Trails'},KEY={hat:'h',cl:'cl',ap:'ap',sh:'sh',ac:'ac',tr:'tr'},TRE={none:'🚫',sparkle:'✨',hearts:'❤️',bubbles:'🫧',flames:'🔥'},TH={hat:[40,-50],cl:[42,-22],ap:[42,-18],sh:[28,-3],ac:[34,-44],ot:[60,-30]};
 const own=(c,id)=>CAT[c][id][1]===0||cfg.own.includes(c+':'+id);
 const avc=(L,s=100,f)=>{const h=f?Math.round(s*1.3):s;return `<canvas class="av" width="${s*2}" height="${h*2}" style="width:${s}px;height:${h}px" data-f="${f?1:''}" data-l='${JSON.stringify(L).replace(/'/g,'')}'></canvas>`},
@@ -508,12 +518,29 @@ async function loadFr(){if(!fok())return;try{const me=cfg.acct.id,rows=await sb(
  if(ids.length){(await sb('/rest/v1/rpc/friend_names',{m:'POST',b:{ids}})).forEach(x=>nm[x.user_id]=x.username);(await sb('/rest/v1/presence?select=user_id,status,room,allow_spec,updated_at&user_id=in.('+ids.join(',')+')')).forEach(x=>pr[x.user_id]=x)}
  const mk=r=>{const o=r.a===me?r.b:r.a,q=pr[o]||{},on=q.updated_at&&Date.now()-new Date(q.updated_at)<75000;return{id:r.id,u:o,n:nm[o]||'Chef',st:on?q.status:'offline',room:on?q.room:null,sp:q.allow_spec!==false}},ord={playing:0,online:1,offline:2};
  FR={l:rows.filter(r=>r.status==='accepted').map(mk).sort((a,b)=>ord[a.st]-ord[b.st]),in:rows.filter(r=>r.status==='pending'&&r.b===me).map(mk),out:rows.filter(r=>r.status==='pending'&&r.a===me).map(mk),ok:1,msg:FR.msg}}catch(e){FR.ok=1;FR.msg=/friendships|friend_names|schema/i.test(e.message)?'Friends are not set up on the server yet. Run friends_setup.sql in Supabase.':niceErr(e.message)}
- if(TAB==='friends'&&phase==='menu'&&!GMV)menuR()}
+ if(frTab())menuR()}
 const frDo=async f=>{try{FR.msg=(await f())||''}catch(e){FR.msg=niceErr(e.message)}loadFr()};
-const frAdd=()=>{const n=gv('fin');FQ='';if(!n){FR.msg='Type a username.';menuR();return}frDo(()=>sb('/rest/v1/rpc/friend_request',{m:'POST',b:{n}}))};
+const frAdd=async()=>{const n=gv('fin');FQ=n;if(!n||n.length<2){FR.msg='Type at least 2 letters.';menuR();return}try{FS=await sb('/rest/v1/rpc/search_players',{m:'POST',b:{q:n}});FR.msg=FS.length?'':'No players found.'}catch(e){FS=[];FR.msg=niceErr(e.message)}menuR()};
+const frAddU=n=>frDo(()=>sb('/rest/v1/rpc/friend_request',{m:'POST',b:{n}}));
+let PF=null,FS=[];const lvl=x=>Math.floor(Math.sqrt((x||0)/50))+1,frTab=()=>phase==='menu'&&!GMV&&(TAB==='friends'||(TAB==='prof'&&PF&&!PF.self));
+async function setProf(){if(!fok())return;try{await sb('/rest/v1/rpc/set_profile',{m:'POST',b:{b:cfg.bio||'',x:cfg.xp||0,s:cfg.stats}})}catch(e){}}
+setInterval(setProf,120000);setTimeout(setProf,4000);
+async function openProf(u){const self=u===cfg.acct.id;TAB='prof';PF={u,self,n:self?cfg.acct.u:'…',bio:self?cfg.bio||'':'',xp:self?cfg.xp||0:0,stats:self?cfg.stats:{}};menuR();if(!FR.ok)loadFr();if(!self){try{const r=(await sb('/rest/v1/rpc/get_profile',{m:'POST',b:{uid:u}}))[0];if(r&&PF&&PF.u===u){PF.n=r.username||'Chef';PF.bio=r.bio||'';PF.xp=r.xp||0;PF.stats=r.stats||{}}}catch(e){}if(PF&&PF.u===u&&TAB==='prof')menuR()}}
+const bioSave=()=>{cfg.bio=gv('pbio').slice(0,140);save();setProf();PF.bio=cfg.bio;FR.msg='Bio saved!';menuR()};
+function profView(){const p=PF;if(!p)return '';const fr=FR.l.find(x=>x.u===p.u),inn=FR.in.find(x=>x.u===p.u),out=FR.out.find(x=>x.u===p.u),S=p.stats||{},L=lvl(p.xp),lo=50*(L-1)**2,hi=50*L*L,ST={playing:'🟢 In game',online:'🟢 Online',offline:'⚪ Offline'},
+ av=p.self?avc(cfg.me,96):`<div style="width:96px;height:96px;border-radius:50%;background:${COLS[hs(p.n)%COLS.length]};display:flex;align-items:center;justify-content:center;font:400 48px 'Lilita One';border:3px solid #fff4">${esc((p.n[0]||'?').toUpperCase())}</div>`,
+ rel=p.self?'':fr?`<button class="chip" onclick="if(confirm('Remove ${esc(p.n)}?')){frDel(${fr.id});TAB='friends';menuR()}">Remove friend</button>`:out?'<span style="opacity:.8">Request sent</span>':inn?`<button class="chip on" onclick="frAcc(${inn.id})">Accept request</button>`:`<button class="chip on" onclick="frAddU('${esc(p.n)}')">Add friend</button>`,
+ stl=p.self?'🟢 Online':fr?ST[fr.st]:'',sp=fr&&fr.st==='playing'&&fr.room&&fr.sp?`<div><button class="chip on" onclick="spectate('${esc(fr.room)}')">👁 Spectate</button></div>`:'';
+ return `${p.self?'':'<button class="chip" onclick="TAB=\'friends\';menuR()">← Friends</button>'}<div style="text-align:center;margin:6px 0"><div style="display:flex;justify-content:center">${av}</div><h2 style="font-size:36px;margin:6px 0 0">${esc(p.n)}</h2><div style="font-size:18px">Level ${L} · ${p.xp||0} XP</div><div style="width:220px;margin:6px auto"><div style="height:8px;border-radius:5px;background:#0004"><div style="height:8px;border-radius:5px;background:var(--gold);width:${Math.min(100,(p.xp-lo)/(hi-lo)*100)|0}%"></div></div></div><div style="margin:4px 0">${stl}</div>${sp}<div style="margin-top:6px">${rel}</div></div>
+ <h3>Stats</h3><table>${[['Rounds','rounds'],['Orders served','served'],['Coins earned','earned'],['Stars','stars'],['Wins','wins'],['Best score','best']].map(([n,k])=>`<tr><th>${n}</th><td>${S[k]||0}</td></tr>`).join('')}</table>
+ <h3>Bio</h3>${p.self?`<textarea id="pbio" class="t" maxlength="140" rows="3" style="width:100%;font-size:16px;letter-spacing:0;text-transform:none" placeholder="Write something about yourself…">${esc(p.bio)}</textarea><div class="row"><button class="b md" onclick="bioSave()">Save bio</button></div>`:`<p style="font-size:16px;line-height:1.5">${p.bio?esc(p.bio):'<span style="opacity:.7">No bio yet.</span>'}</p>`}<p class="msg">${esc(FR.msg)}</p>`}
 const frAcc=id=>frDo(()=>sb('/rest/v1/friendships?id=eq.'+id,{m:'PATCH',b:{status:'accepted'}}).then(()=>'Friend added!')),frDel=id=>frDo(()=>sb('/rest/v1/friendships?id=eq.'+id,{m:'DELETE'}).then(()=>''));
 function hb(){if(!fok())return;const f=cfg.fs||{req:1,spec:1};sb('/rest/v1/presence?on_conflict=user_id',{m:'POST',h:{Prefer:'resolution=merge-duplicates,return=minimal'},b:{user_id:cfg.acct.id,status:phase==='play'?'playing':'online',room:NET?NET.code:null,allow_spec:!!f.spec,allow_req:!!f.req,updated_at:new Date().toISOString()}}).catch(()=>{})}
 /* ---- notifications + challenges (needs the challenges table in friends_setup.sql) ---- */
+function sendCh(u,code){return sb('/rest/v1/challenges',{m:'POST',h:{Prefer:'return=minimal'},b:{from_id:cfg.acct.id,to_id:u,room:code}})}
+async function invOpen(){if(!fok()){toast('Log in to invite friends.');return}let e=$('#inv');if(!e){e=document.createElement('div');e.id='inv';$('#app').appendChild(e)}e.style.display='flex';invR();await loadFr();invR()}
+function invR(){const e=$('#inv');if(!e||e.style.display==='none')return;e.innerHTML=`<div class="panel" style="width:min(420px,92%);max-height:80%;overflow:auto"><h2>Invite friends</h2>${FR.l.map(f=>`<div class="pl" style="padding:8px 12px"><div style="flex:1"><b>${esc(f.n)}</b><div style="font-size:13px;opacity:.8">${f.st==='offline'?'⚪ Offline':f.st==='playing'?'🟢 In game':'🟢 Online'}</div></div>${f.st==='online'?`<button class="chip on" onclick="invSend('${f.u}',this)">Invite</button>`:''}</div>`).join('')||'<p>No friends yet.</p>'}<button class="b alt md" onclick="$('#inv').style.display='none'">Close</button></div>`}
+function invSend(u,b){sendCh(u,NET.code).then(()=>{b.textContent='Invited ✓';b.disabled=true}).catch(()=>{b.textContent='Failed'})}
 let CHL=[],NB=0,NSEEN=null,PENDCH=null;
 const toastX=()=>{$('#toast').style.display='none'};
 function toast(m,btns){if(!cfg.nt)return;const e=$('#toast');e.innerHTML=`<span>${m}</span>${btns||''}<button class="chip" onclick="toastX()">✕</button>`;e.style.display='flex';clearTimeout(toast.t);toast.t=setTimeout(toastX,9000);tone(880,.1,'sine',.08)}
@@ -533,7 +560,7 @@ async function poll(){if(!fok())return;try{const me=cfg.acct.id,since=new Date(D
  NSEEN=new Set([...inc.map(r=>'r'+r.id),...acc.map(r=>'a'+r.id),...ch.map(c=>'c'+c.id)]);
  if(ob!==NB+CHL.length&&phase==='menu'&&!GMV)menuR()}catch(e){}}
 setInterval(poll,6000);setTimeout(poll,2500);
-setInterval(hb,30000);setTimeout(hb,3000);setInterval(()=>{if(TAB==='friends'&&phase==='menu'&&!GMV)loadFr()},12000);
+setInterval(hb,30000);setTimeout(hb,3000);setInterval(()=>{if(frTab())loadFr()},12000);
 function spectate(code){if(typeof Peer==='undefined'){FR.msg='Online needs the PeerJS script.';menuR();return}au();leaveNet();MODE='online';const peer=new Peer();NET={host:false,peer,code,c:null,me:0,spec:1};
  const bail=m=>{leaveNet();goMenu('friends');FR.msg=m;menuR()},tmo=setTimeout(()=>bail('Could not reach that game.'),10000);
  peer.on('error',()=>{clearTimeout(tmo);bail('Could not reach that game.')});peer.on('open',()=>{const c=peer.connect('kchaos-'+code,{reliable:true});NET.c=c;c.on('open',()=>{clearTimeout(tmo);c.send({t:'spec'})});c.on('data',m=>guestMsg(m));c.on('close',()=>{if(NET&&phase==='play')bail('The game ended.')})})}
@@ -541,14 +568,14 @@ function friendsView(){const h='<h2 style="font-size:40px">Friends</h2>';
  if(!SB_URL)return h+'<p>Friends need the Supabase setup.</p>';
  if(!cfg.acct)return h+'<p style="font-size:17px;line-height:1.5">Log in to add friends, see who is playing and spectate their games.</p><button class="b md" onclick="TAB=\'acct\';menuR()">Go to Account</button>';
  if(!FR.ok){FR.ok=1;loadFr()}
- const ST={playing:'🟢 Playing',online:'🟢 Online',offline:'⚪ Offline'},av=n=>`<div style="width:54px;height:54px;border-radius:50%;flex:none;background:${COLS[hs(n)%COLS.length]};display:flex;align-items:center;justify-content:center;font:400 28px 'Lilita One';border:3px solid #fff4">${esc((n[0]||'?').toUpperCase())}</div>`,
- row=(f,sub,b)=>`<div class="pl" style="padding:10px 16px;gap:14px">${av(f.n)}<div style="flex:1"><div style="font:400 24px 'Lilita One'">${esc(f.n)}</div><div style="font-size:14px;opacity:.85">${sub}</div></div>${b}</div>`,
+ const ST={playing:'🟢 In game',online:'🟢 Online',offline:'⚪ Offline'},av=n=>`<div style="width:54px;height:54px;border-radius:50%;flex:none;background:${COLS[hs(n)%COLS.length]};display:flex;align-items:center;justify-content:center;font:400 28px 'Lilita One';border:3px solid #fff4">${esc((n[0]||'?').toUpperCase())}</div>`,
+ row=(f,sub,b)=>`<div class="pl" style="padding:10px 16px;gap:14px">${av(f.n)}<div style="flex:1;cursor:pointer" onclick="openProf('${f.u}')"><div style="font:400 24px 'Lilita One'">${esc(f.n)}</div><div style="font-size:14px;opacity:.85">${sub}</div></div>${b}</div>`,
  on=FR.l.filter(f=>f.st!=='offline').length;
- return h+`<div class="row" style="margin:10px 0"><input id="fin" class="t" style="width:240px;font-size:18px;letter-spacing:0;text-transform:none" maxlength="12" placeholder="Add friend by username" value="${esc(FQ)}" oninput="FQ=this.value" onkeydown="if(event.key==='Enter')frAdd()"><button class="b md" onclick="frAdd()">Add friend</button></div><p class="msg">${esc(FR.msg)}</p>
+ return h+`<div class="row" style="margin:10px 0"><input id="fin" class="t" style="width:240px;font-size:18px;letter-spacing:0;text-transform:none" maxlength="12" placeholder="Search players" value="${esc(FQ)}" oninput="FQ=this.value" onkeydown="if(event.key==='Enter')frAdd()"><button class="b md" onclick="frAdd()">Search</button></div><p class="msg">${esc(FR.msg)}</p>${FS.map(x=>{const q=FR.l.find(y=>y.u===x.user_id),i=FR.in.find(y=>y.u===x.user_id),o=FR.out.find(y=>y.u===x.user_id);return row({n:x.username,u:x.user_id},'Level '+lvl(x.xp)+' · tap to view profile',q?'<span style="opacity:.8">Friends ✓</span>':o?'<span style="opacity:.8">Request sent</span>':i?`<button class="chip on" onclick="frAcc(${i.id})">Accept</button>`:`<button class="chip on" onclick="frAddU(\'${esc(x.username)}\')">Add friend</button>`)}).join('')}
  ${CHL.length?'<h3 style="font-size:20px">Challenges</h3>'+CHL.map(c=>row(c,'challenged you to a game',`<button class="chip on" onclick="chJoin(${c.id})">Join</button><button class="chip" onclick="chDel(${c.id})">Dismiss</button>`)).join(''):''}<h3 style="font-size:20px">Friend requests ${FR.in.length?'('+FR.in.length+')':''}</h3>${FR.in.map(f=>row(f,'wants to be your friend',`<button class="chip on" onclick="frAcc(${f.id})">Accept</button><button class="chip" onclick="frDel(${f.id})">Decline</button>`)).join('')}${FR.out.map(f=>row(f,'request sent',`<button class="chip" onclick="frDel(${f.id})">Cancel</button>`)).join('')}${FR.in.length||FR.out.length?'':'<p style="opacity:.7">No requests right now.</p>'}
  <h3 style="font-size:20px">Your friends (${on} online / ${FR.l.length})</h3>${FR.l.map(f=>row(f,ST[f.st]+(f.st==='playing'&&!f.sp?' · spectating off':''),`${f.st==='online'?`<button class="chip on" onclick="frChal('${f.u}')">⚔ Challenge</button>`:''}${f.st==='playing'&&f.room&&f.sp?`<button class="chip on" onclick="spectate('${esc(f.room)}')">👁 Spectate</button>`:''}<button class="chip" onclick="if(confirm('Remove ${esc(f.n)}?'))frDel(${f.id})">Remove</button>`)).join('')||'<p style="opacity:.7">No friends yet. Add someone above.</p>'}`}
 const PANES={
- friends(){return friendsView()},
+ friends(){return friendsView()},prof(){return profView()},
  upd(){return `<h2>Updates</h2>${[['New','Podium results with Employee of the game and shared credit for teamwork','End now button in the game menu','Online friends: requests, status, spectating. Privacy lives in Settings','Challenge online friends. Notifications in game and menu (turn off in Settings)','Highlight is a subtle outline on what you are facing','Smaller walk animation, legs stay attached','Interact with the closest spot','Calmer music, fewer speech bubbles, bigger chef preview, Soft sound style'],['Before','Chef textures and custom sound files']].map(([v,...l])=>`<div class="pl"><div><b>${v}</b><ul style="margin:4px 0;padding-left:18px;font-size:14px;line-height:1.5">${l.map(x=>`<li>${x}</li>`).join('')}</ul></div></div>`).join('')}`},
  play(){return `<div style="display:flex;height:100%;align-items:center"><div style="flex:1;display:flex;flex-direction:column;align-items:center;zoom:var(--z,1)"><div class="logo" style="font-size:54px">Kitchen Chaos</div><div class="sub">cook together. panic together.</div>
   <button class="b xl" onclick="goSetup()">PLAY LOCAL</button><button class="b lg" onclick="goCreate()">Create Room</button><button class="b md" onclick="goJoin()">Join Room</button>
@@ -572,8 +599,9 @@ const PANES={
  set(gm){return `<h2>Settings</h2><div class="row"><span>Textures</span>${['high','low'].map(q=>`<button class="chip ${cfg.gq===q?'on':''}" onclick="cfg.gq='${q}';for(const k in SC)delete SC[k];save();menuR()">${q==='high'?'High':'Low (fast)'}</button>`).join('')}</div><div class="row"><span>Sound style</span>${[['soft','Soft'],['classic','Classic']].map(([k,n])=>`<button class="chip ${(cfg.snd||'soft')===k?'on':''}" onclick="cfg.snd='${k}';save();menuR();tone(660,.1,'sine')">${n}</button>`).join('')}</div><h3>Friends</h3>${tgf('req','Allow friend requests')}${tgf('spec','Allow spectating')}${tg('nt','Notifications')}${tg('parts','Particles')}${tg('shake','Screen shake')}${tg('bub','Speech bubbles')}${tg('tags','Chef names')}${tg('hl','Highlight')}
   <div class="row"><span>Sound FX</span><input type="range" min="0" max="100" value="${cfg.sfx*100}" oninput="cfg.sfx=this.value/100;vol();save()" onchange="tone(660,.1,'sine')"></div><div class="row"><span>Music</span><input type="range" min="0" max="100" value="${cfg.mus*100}" oninput="cfg.mus=this.value/100;vol();save()"></div>
   <div class="row"><span>Screen</span><button class="chip" onclick="document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen()">Toggle fullscreen</button></div>${gm?'':`<div class="row"><span>Save data</span><button class="chip" onclick="rstData()">${RST?'Click again to wipe everything':'Reset save data'}</button></div>`}`}};
+{const o=PANES.set;PANES.set=gm=>o.call(PANES,gm)+(cfg.acct&&!gm?'<hr style="opacity:.25;margin:16px 0">'+acctView().replace('<h2>Account</h2>','<h3>Account</h3>'):'')}
 function menuR(){if(GMV){gmR();return}if(phase!=='menu')return;const T_=[['play','Play'],['cust','Customize'],['shop','Shop'],['rec','Recipes'],['quests','Quests'],['friends','Friends'+(NB&&cfg.nt?`<span class="bdg">${NB}</span>`:'')],['stats','Stats']],tb=(k,n)=>`<button class="tb ${TAB===k?'on':''}" onclick="TAB='${k}';RST=0;SEL=null;PVL={};AMSG='';menuR()">${n}</button>`;
- ui(`<div class="mnav"><div class="slogo">Kitchen Chaos</div>${T_.map(([k,n])=>tb(k,n)).join('')}<div style="flex:1"></div>${tb('acct','👤 '+(cfg.acct?cfg.acct.u:'Account'))}${tb('upd','📰 Updates')}${tb('set','⚙ Settings')}</div><div class="mtop"><b id="pn">${cfg.me.n}</b> &nbsp;🪙 ${cfg.coins}</div><div class="mmain">${PANES[TAB]()}</div>`,'m:'+TAB)}
+ ui(`<div class="mnav"><div class="slogo">Kitchen Chaos</div>${T_.map(([k,n])=>tb(k,n)).join('')}<div style="flex:1"></div>${cfg.acct?`<button class="tb ${TAB==='prof'&&PF&&PF.self?'on':''}" onclick="openProf('${cfg.acct.id}')">👤 ${esc(cfg.acct.u)}</button>`:tb('acct','👤 Account')}${tb('upd','📰 Updates')}${tb('set','⚙ Settings')}</div><div class="mtop"><b id="pn">${cfg.me.n}</b> &nbsp;🪙 ${cfg.coins}</div><div class="mmain">${PANES[TAB]()}</div>`,'m:'+TAB)}
 function goMenu(t){GMV=null;leaveNet();phase='menu';paused=false;KS=[];V=null;if(typeof t==='string')TAB=t;menuR()}
 function goSetup(){phase='setup';MODE='local';ui(`<div class="ov dim"><div class="panel" style="width:520px"><h2>Pick your kitchen</h2>${setPanel(1,1)}<p style="font-size:12px;opacity:.85;margin:8px 0 0"><b>P1:</b> WASD + E${G.n===2?' · <b>P2:</b> Arrows + Enter':''} · Esc pauses</p></div><div class="row"><button class="b alt md" onclick="goMenu()">Back</button><button class="b" onclick="startLocal()">Start cooking!</button></div></div>`,'setup')}
 function startLocal(){au();MODE='local';G.mode='coop';save();DUR=G.len*60;KS=[mkK(0,Math.random()*1e9|0,[cfg.me,P2L].slice(0,G.n))];V=KS[0];ME={k:0,pi:0};SCR=[];PT=[];phase='play';paused=false;playUI()}
@@ -588,7 +616,7 @@ function pod(t){const P=[...t.pl].sort((a,b)=>b.sh-a.sh),o=P.length>2?[1,0,2]:P.
  <table><tr><th></th>${P.map(p=>`<th>${esc(p.n)}</th>`).join('')}</tr>${[['Served',p=>p.d],['Helped cook',p=>p.cr],['Earned 🪙',p=>p.sh]].map(([n,f])=>`<tr><th>${n}</th>${P.map(p=>`<td>${f(p)}</td>`).join('')}</tr>`).join('')}</table>
  <p style="margin:6px 0;font-size:13px">Team: ${t.st.done} served · ${t.st.fail} missed · ${t.st.burnt} burnt · ${t.st.waste} wasted. Anyone who cooked part of a dish gets credit for it.</p>`}
 function showRes(r){GMV=null;phase='res';res=r;const my=r.k[r.my],tm=r.mode==='team',me=r.sc[r.my],x=r.len/3,sc=me[1],stars=sc>=280*x?3:sc>=160*x?2:sc>=60*x?1:0,won=tm&&r.sc.every(o=>o===me||o[1]<sc),dm={Easy:.8,Normal:1,Hard:1.5}[G.d]||1,
- coins=Math.round((10+stars*15+my.st.done*3+(won?20:0))*dm),S=cfg.stats;for(const p in PER)qState(p);cfg.coins+=coins;S.rounds++;S.served+=my.st.done;S.earned+=coins;S.stars+=stars;S.burnt+=my.st.burnt;S.best=Math.max(S.best,sc);for(const p in PER){const q=qState(p);q.mx=Math.max(q.mx,sc)}if(won)S.wins++;save();
+ coins=Math.round((10+stars*15+my.st.done*3+(won?20:0))*dm),S=cfg.stats;for(const p in PER)qState(p);cfg.coins+=coins;cfg.xp=(cfg.xp||0)+20+stars*10+my.st.done*2;setTimeout(setProf,500);S.rounds++;S.served+=my.st.done;S.earned+=coins;S.stars+=stars;S.burnt+=my.st.burnt;S.best=Math.max(S.best,sc);for(const p in PER){const q=qState(p);q.mx=Math.max(q.mx,sc)}if(won)S.wins++;save();
  const w=tm?(r.sc[0][1]===r.sc[1][1]?-1:r.sc[0][1]>r.sc[1][1]?r.sc[0][0]:r.sc[1][0]):0,
  head=tm?`<h2>${w<0?'Draw!':'Team '+TEAMS[w][0]+' wins!'}</h2><table>${r.sc.map(s=>`<tr><th style="color:${TEAMS[s[0]][1]}">Team ${TEAMS[s[0]][0]}</th><td>🪙 ${s[1]}</td></tr>`).join('')}</table>`:`<h2>Service over</h2>`;
  ui(`<div class="ov dim"><div class="panel" style="width:min(640px,94vw);max-height:92%">${tm?`<h3 style="text-align:center;font-size:22px;color:${won?'#8bff9c':w<0?'#ffd23f':'#ff7a6a'}">${w<0?'Draw':won?'You won!':'You lost'}</h3>`:''}${head}${pod(my)}<div class="stars" style="text-align:center">${'★'.repeat(stars)}${'☆'.repeat(3-stars)}</div>
@@ -598,12 +626,12 @@ function showRes(r){GMV=null;phase='res';res=r;const my=r.k[r.my],tm=r.mode==='t
 
 /* ================= ONLINE (PeerJS WebRTC, no server needed) ================= */
 const rcode=()=>Array.from({length:4},()=>'ABCDEFGHJKLMNPQRSTUVWXYZ'[Math.random()*24|0]).join('');
-function leaveNet(){if(NET){try{NET.host?NET.conns.forEach(c=>c.close()):NET.c&&NET.c.close();NET.peer.destroy()}catch(e){}NET=null}LB=[]}
+function leaveNet(){if(NET){try{NET.host?NET.conns.forEach(c=>c.close()):NET.c&&NET.c.close();NET.peer.destroy()}catch(e){}NET=null}LB=[];const iv=$('#inv');if(iv)iv.style.display='none'}
 const noLib=()=>typeof Peer==='undefined'&&(netMsg('Online needs the PeerJS script (check your internet connection).'),1);
 function netMsg(m){const e=$('#nm');if(e)e.textContent=m;else{ui(`<div class="ov dim"><div class="panel"><p class="msg">${m}</p><button class="b md" onclick="goMenu()">Back</button></div></div>`)}}
 function goCreate(){if(typeof Peer==='undefined'){netMsg('Online needs the PeerJS script (check your internet connection).');return}au();MODE='online';leaveNet();phase='lobby';ui(`<div class="ov dim"><h2>Creating room…</h2><div id="nm" class="msg"></div></div>`);mkRoom(0)}
 function mkRoom(n){const code=rcode(),peer=new Peer('kchaos-'+code);NET={host:true,peer,code,conns:[],me:0};
- peer.on('open',()=>{LB=[{name:cfg.me.n,look:{...cfg.me},team:0}];lobbyUI();if(PENDCH){const u=PENDCH;PENDCH=null;sb('/rest/v1/challenges',{m:'POST',h:{Prefer:'return=minimal'},b:{from_id:cfg.acct.id,to_id:u,room:code}}).then(()=>toast('Challenge sent! Waiting for them to join.')).catch(()=>{})}});
+ peer.on('open',()=>{LB=[{name:cfg.me.n,look:{...cfg.me},team:0}];lobbyUI();if(PENDCH){const u=PENDCH;PENDCH=null;sendCh(u,code).then(()=>toast('Challenge sent! Waiting for them to join.')).catch(()=>{})}});
  peer.on('error',e=>{if(e.type==='unavailable-id'&&n<5){try{peer.destroy()}catch(x){}mkRoom(n+1)}else{NET=null;netMsg('Could not create room: '+e.type)}});
  peer.on('connection',c=>{if(c.label==='fast'){NET.fast=NET.fast||{};NET.fast[c.peer]=c;c.on('data',m=>{const mc=NET.conns.find(x=>x.peer===c.peer);if(mc&&m&&m.t==='in')hostMsg(mc,m)});return}c.on('data',m=>hostMsg(c,m));c.on('close',()=>dropConn(c));c.on('error',()=>dropConn(c))})}
 function hostMsg(c,m){if(!m)return;
@@ -621,6 +649,7 @@ function lobbyUI(){if(!NET||phase!=='lobby')return;const host=NET.host,tm=G.mode
  ui(`<div class="ov dim"><div style="display:flex;gap:12px;width:700px;height:490px"><div class="panel" style="flex:1.1"><h2>${host?'Settings':'Host settings'}</h2>${setPanel(host,0)}${host?'':'<p style="font-size:12px;opacity:.8">Only the host can change these.</p>'}</div>
  <div class="panel" style="flex:1;display:flex;flex-direction:column"><div style="text-align:center">Room code<div class="code">${NET.code}</div></div>
  <div style="overflow:auto;flex:1">${LB.map((p,i)=>`<div class="pl">${avc(p.look,64)}<div style="flex:1"><b>${p.name}</b>${i===0?' 👑':''}${i===NET.me?' (you)':''}</div>${tm?`<button class="chip on" style="border-color:${TEAMS[p.team][1]};background:${TEAMS[p.team][1]}" ${host?`onclick="LB[${i}].team^=1;lobbyBc();lobbyUI()"`:'disabled'}>Team ${TEAMS[p.team][0]}</button>`:''}</div>`).join('')}</div>
+ ${host?'<button class="b alt md" onclick="invOpen()">➕ Invite friends</button>':''}
  <p style="font-size:12px;opacity:.8;margin:4px 0">Change your look in the Customize tab.</p>
  <div id="nm" class="msg"></div><div style="text-align:center">${host?`<button class="b md" onclick="startOnline()">Start!</button>`:'<span>Waiting for host…</span>'} <button class="b alt md" onclick="goMenu()">Leave</button></div></div></div></div>`,'lobby')}
 function startOnline(){if(!NET||!NET.host)return;const tm=G.mode==='team';if(tm&&new Set(LB.map(p=>p.team)).size<2){$('#nm').textContent='Team vs Team needs players on both teams (click a team badge).';return}
